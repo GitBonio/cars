@@ -2,99 +2,2246 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Car Ranking</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Our Car Shortlist</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet">
 <style>
-  body { font-family: Arial, sans-serif; background:#111; color:#eee; }
-  table { border-collapse: collapse; width:100%; margin-top:20px; }
-  th, td { padding:10px; border-bottom:1px solid #333; text-align:left; }
-  th { background:#222; }
-  tr:hover { background:#1a1a1a; }
-  .good { color:#4caf50; }
-  .bad { color:#f44336; }
+:root {
+  --bg: #0f0f0f;
+  --surface: #1a1a1a;
+  --surface2: #222;
+  --border: #2e2e2e;
+  --accent: #c8a96e;
+  --accent2: #e8c98e;
+  --text: #f0ece4;
+  --muted: #777;
+  --green: #4caf7d;
+  --amber: #e8a730;
+  --red: #e05c5c;
+  --blue: #5b9bd5;
+  --ev: #3dbf8a;
+  --purple: #a78bca;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; font-weight: 300; min-height: 100vh; }
+
+/* HERO */
+.hero {
+  background: linear-gradient(160deg, #0f0f0f 0%, #1c1508 55%, #0f0f0f 100%);
+  border-bottom: 1px solid var(--border);
+  padding: 2.5rem 2rem 0;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% -10%, rgba(200,169,110,0.14) 0%, transparent 65%);
+  pointer-events: none;
+}
+.hero-eyebrow { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.28em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.6rem; }
+.hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 5vw, 3.2rem); font-weight: 900; line-height: 1.1; margin-bottom: 0.6rem; }
+.hero h1 span { color: var(--accent); }
+.hero p { color: var(--muted); font-size: 0.9rem; max-width: 440px; margin: 0 auto 1.75rem; }
+
+/* TABS */
+.tabs {
+  display: flex;
+  justify-content: center;
+  gap: 0;
+  position: relative;
+  z-index: 1;
+}
+.tab-btn {
+  background: transparent;
+  border: none;
+  border-bottom: 3px solid transparent;
+  color: var(--muted);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  padding: 0.85rem 1.8rem;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+  white-space: nowrap;
+}
+.tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+.tab-btn:hover:not(.active) { color: var(--text); }
+
+/* SORT KEY */
+.sort-key {
+  display: flex;
+  justify-content: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  padding: 1rem;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+.sort-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.68rem;
+  font-weight: 500;
+  color: var(--muted);
+}
+.sort-badge .num {
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #0f0f0f;
+  font-weight: 700;
+  font-size: 0.6rem;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+/* TAB PANELS */
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* CARDS */
+.cards { max-width: 860px; margin: 0 auto; padding: 1.5rem 1rem 4rem; display: flex; flex-direction: column; gap: 1rem; }
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  transition: border-color 0.2s, transform 0.15s;
+  animation: fadeUp 0.35s ease both;
+}
+.card:hover { border-color: var(--accent); transform: translateY(-2px); }
+@keyframes fadeUp { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:translateY(0); } }
+.card:nth-child(1){animation-delay:.03s}.card:nth-child(2){animation-delay:.06s}.card:nth-child(3){animation-delay:.09s}.card:nth-child(4){animation-delay:.12s}.card:nth-child(5){animation-delay:.15s}.card:nth-child(6){animation-delay:.18s}.card:nth-child(7){animation-delay:.21s}.card:nth-child(8){animation-delay:.24s}.card:nth-child(9){animation-delay:.27s}.card:nth-child(10){animation-delay:.30s}.card:nth-child(11){animation-delay:.33s}.card:nth-child(12){animation-delay:.36s}.card:nth-child(13){animation-delay:.39s}.card:nth-child(14){animation-delay:.42s}.card:nth-child(15){animation-delay:.45s}.card:nth-child(16){animation-delay:.48s}.card:nth-child(17){animation-delay:.51s}.card:nth-child(18){animation-delay:.54s}.card:nth-child(19){animation-delay:.57s}.card:nth-child(20){animation-delay:.60s}.card:nth-child(21){animation-delay:.63s}.card:nth-child(22){animation-delay:.66s}
+
+.card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 1.1rem 1.3rem 0.85rem;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+.card-rank { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 900; color: var(--border); line-height: 1; min-width: 2.2rem; }
+.card-title-block { flex: 1; min-width: 0; }
+.card-type { font-size: 0.62rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.15rem; }
+.card-name { font-family: 'Playfair Display', serif; font-size: 1.15rem; font-weight: 700; line-height: 1.2; }
+.card-spec { font-size: 0.77rem; color: var(--muted); margin-top: 0.12rem; }
+.card-badges { display: flex; flex-direction: column; align-items: flex-end; gap: 0.3rem; }
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  border-radius: 5px;
+  padding: 0.18rem 0.55rem;
+  font-size: 0.67rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+.badge-ev     { background:rgba(61,191,138,.13); color:var(--ev);    border:1px solid rgba(61,191,138,.28); }
+.badge-full   { background:rgba(91,155,213,.13); color:var(--blue);  border:1px solid rgba(91,155,213,.28); }
+.badge-mild   { background:rgba(232,167,48,.1);  color:var(--amber); border:1px solid rgba(232,167,48,.22); }
+.badge-phev   { background:rgba(167,139,202,.13);color:var(--purple);border:1px solid rgba(167,139,202,.28); }
+.badge-petrol { background:rgba(240,236,228,.06);color:var(--muted); border:1px solid var(--border); }
+.badge-diesel { background:rgba(120,80,40,.18);  color:#c8965a;      border:1px solid rgba(120,80,40,.35); }
+.badge-lpg    { background:rgba(150,100,200,.13);color:#b890e8;      border:1px solid rgba(150,100,200,.28); }
+.badge-warn   { background:rgba(224,92,92,.1);   color:var(--red);   border:1px solid rgba(224,92,92,.22); font-size:.62rem; }
+.badge-good   { background:rgba(76,175,125,.1);  color:var(--green); border:1px solid rgba(76,175,125,.22); }
+
+/* STATS GRID */
+.card-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 1px;
+  background: var(--border);
+  border-top: 1px solid var(--border);
+}
+.stat { background: var(--surface2); padding: 0.75rem 0.9rem; }
+.stat-label { font-size: 0.59rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.12rem; }
+.stat-value { font-size: 0.92rem; font-weight: 600; color: var(--text); line-height: 1.2; }
+.stat-value.good { color: var(--green); }
+.stat-value.ok   { color: var(--amber); }
+.stat-value.bad  { color: var(--red); }
+.stat-value.ev   { color: var(--ev); }
+.stars { color: var(--accent); letter-spacing: -0.05em; }
+.stars.dim { color: var(--border); }
+
+/* CARD FOOTER */
+.card-footer {
+  padding: 0.75rem 1.3rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid var(--border);
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.card-note { font-size: 0.77rem; color: var(--muted); flex: 1; }
+.view-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  border-radius: 7px;
+  padding: 0.35rem 0.9rem;
+  font-size: 0.74rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background 0.18s, color 0.18s;
+  font-family: 'DM Sans', sans-serif;
+  white-space: nowrap;
+}
+.view-link:hover { background: var(--accent); color: #0f0f0f; }
+
+/* RECOMMENDED TRIM CARDS */
+.rec-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  transition: border-color 0.2s, transform 0.15s;
+  animation: fadeUp 0.35s ease both;
+}
+.rec-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+
+.rec-header {
+  padding: 1.1rem 1.3rem 0.75rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.rec-rank { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 900; color: var(--border); line-height: 1; min-width: 2rem; }
+.rec-title-block { flex: 1; }
+.rec-type { font-size: 0.62rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.12rem; }
+.rec-name { font-family: 'Playfair Display', serif; font-size: 1.15rem; font-weight: 700; }
+.rec-sub { font-size: 0.77rem; color: var(--muted); }
+
+.rec-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--border);
+}
+@media (max-width: 560px) { .rec-options { grid-template-columns: 1fr; } }
+
+.rec-option {
+  background: var(--surface2);
+  padding: 1rem 1.1rem;
+}
+.rec-option-label {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 0.4rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.label-value { color: var(--green); }
+.label-allround { color: var(--blue); }
+.rec-trim-name { font-size: 0.95rem; font-weight: 600; color: var(--text); margin-bottom: 0.2rem; }
+.rec-engine { font-size: 0.78rem; color: var(--muted); margin-bottom: 0.6rem; }
+.rec-bullets { list-style: none; display: flex; flex-direction: column; gap: 0.25rem; margin-bottom: 0.7rem; }
+.rec-bullets li { font-size: 0.77rem; color: var(--muted); display: flex; gap: 0.4rem; }
+.rec-bullets li::before { content: '→'; color: var(--accent); flex-shrink: 0; }
+.rec-price { font-size: 0.8rem; font-weight: 600; color: var(--accent); }
+.rec-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  border-radius: 6px;
+  padding: 0.3rem 0.75rem;
+  font-size: 0.7rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: border-color 0.18s, color 0.18s;
+  font-family: 'DM Sans', sans-serif;
+  margin-top: 0.5rem;
+  display: block;
+  text-align: center;
+}
+.rec-link:hover { border-color: var(--accent); color: var(--accent); }
+
+/* SKIP NOTICE */
+.skip-notice {
+  max-width: 860px;
+  margin: 0 auto 0;
+  padding: 0 1rem;
+}
+.skip-box {
+  background: rgba(224,92,92,.06);
+  border: 1px solid rgba(224,92,92,.2);
+  border-radius: 10px;
+  padding: 0.85rem 1.1rem;
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin-bottom: 0;
+}
+.skip-box strong { color: var(--red); }
+
+/* SUMMARY BOX */
+.summary-box {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 1rem 3rem;
+}
+.summary-inner {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1.3rem;
+}
+.summary-title { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: var(--accent); margin-bottom: 0.9rem; }
+.summary-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px,1fr)); gap: 0.75rem; }
+.summary-item { background: var(--surface2); border-radius: 9px; padding: 0.85rem; }
+.summary-item-label { font-size: 0.62rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.3rem; }
+.summary-item-value { font-weight: 600; color: var(--text); font-size: 0.9rem; }
+.summary-item-note { font-size: 0.75rem; color: var(--muted); margin-top: 0.2rem; }
+
+/* FOOTER */
+.footer { text-align: center; padding: 2rem; border-top: 1px solid var(--border); color: var(--muted); font-size: 0.74rem; }
+
+@media (max-width: 480px) {
+  .card-header { flex-direction: column; }
+  .card-badges { flex-direction: row; align-items: flex-start; flex-wrap: wrap; }
+  .card-stats { grid-template-columns: repeat(2,1fr); }
+  .tab-btn { padding: 0.75rem 1rem; font-size: 0.75rem; }
+}
 </style>
 </head>
 <body>
 
-<h1>Car Ranking (Fixed & Weighted)</h1>
-<p>Sorted by: Reliability → Insurance → Tax → Cost → Size</p>
+<div class="hero">
+  <div class="hero-eyebrow">Our Car Shortlist</div>
+  <h1>Find Our <span>Perfect</span> Car</h1>
+  <p>28 cars compared — sorted by reliability, insurance, road tax and running costs. Tap a listing to browse photos.</p>
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('shortlist', this)">📋 Our Shortlist</button>
+    <button class="tab-btn" onclick="switchTab('recommended', this)">⭐ Recommended Trims</button>
+  </div>
+</div>
 
-<table id="carTable">
-<thead>
-<tr>
-  <th>Car</th>
-  <th>Reliability</th>
-  <th>Insurance</th>
-  <th>VED</th>
-  <th>£ / 100 miles</th>
-  <th>Length (mm)</th>
-  <th>Score</th>
-</tr>
-</thead>
-<tbody></tbody>
-</table>
+<div class="sort-key">
+  <div class="sort-badge"><span class="num">1</span> Reliability</div>
+  <div class="sort-badge"><span class="num">2</span> Insurance Group</div>
+  <div class="sort-badge"><span class="num">3</span> Road Tax (VED)</div>
+  <div class="sort-badge"><span class="num">4</span> Cost per 100 miles</div>
+</div>
+
+<!-- ==================== TAB 1: SHORTLIST ==================== -->
+<div class="tab-panel active" id="tab-shortlist">
+<div class="cards">
+
+  <!-- 01 Kia ProCeed -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-rank">01</div>
+      <div class="card-title-block">
+        <div class="card-type">Shooting Brake</div>
+        <div class="card-name">Kia ProCeed GT-Line</div>
+        <div class="card-spec">2024 (24) · 1.5T GDi ISG · Manual · ~21–24k used</div>
+      </div>
+      <div class="card-badges">
+        <span class="badge badge-petrol">⛽ Petrol</span>
+        <span class="badge badge-good">7yr/100k Warranty</span>
+      </div>
+    </div>
+    <div class="card-stats">
+      <div class="stat"><div class="stat-label">Insurance</div><div class="stat-value good">Group 13</div></div>
+      <div class="stat"><div class="stat-label">Road Tax</div><div class="stat-value good">£195/yr</div></div>
+      <div class="stat"><div class="stat-label">Per 100 Miles</div><div class="stat-value good">£13.70</div></div>
+      <div class="stat"><div class="stat-label">Real MPG</div><div class="stat-value">~48 mpg</div></div>
+      <div class="stat"><div class="stat-label">Boot</div><div class="stat-value good">593 L</div></div>
+      <div class="stat"><div class="stat-label">NCAP</div><div class="stat-value"><span class="stars">★★★★</span><span class="stars dim">★</span></div></div>
+      <div class="stat"><div class="stat-label">Reliability</div><div class="stat-value good">Excellent</div></div>
+      <div class="stat"><div class="stat-label">Warranty</div><div class="stat-value good">7yr / 100k mi</div></div>
+    </div>
+    <div class="card-footer">
+      <div class="card-note">No auto in GT-Line · Low roof affects rear headroom</div>
+      <a class="view-link" href="https://www.autotrader.co.uk/car-search?make=Kia&model=ProCeed&year-from=2024" target="_blank">View Listings ↗</a>
+    </div>
+  </div>
+
+  <!-- 02 Kia XCeed -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-rank">02</div>
+      <div class="card-title-block">
+        <div class="card-type">Compact Crossover</div>
+        <div class="card-name">Kia XCeed GT-Line</div>
+        <div class="card-spec">2023 (73) · 1.5T GDi ISG · ~17–20k used</div>
+      </div>
+      <div class="card-badges">
+        <span class="badge badge-petrol">⛽ Petrol</span>
+        <span class="badge badge-good">7yr/100k Warranty</span>
+      </div>
+    </div>
+    <div class="card-stats">
+      <div class="stat"><div class="stat-label">Insurance</div><div class="stat-value good">Group 18</div></div>
+      <div class="stat"><div class="stat-label">Road Tax</div><div class="stat-value good">£195/yr</div></div>
+      <div class="stat"><div class="stat-label">Per 100 Miles</div><div class="stat-value good">£14.90</div></div>
+      <div class="stat"><div class="stat-label">Real MPG</div><div class="stat-value">~44 mpg</div></div>
+      <div class="stat"><div class="stat-label">Boot</div><div class="stat-value ok">426 L</div></div>
+      <div class="stat"><div class="stat-label">NCAP</div><div class="stat-value"><span class="stars">★★★★★</span></div></div>
+      <div class="stat"><div class="stat-label">Reliability</div><div class="stat-value good">Excellent</div></div>
+      <div class="stat"><div class="stat-label">Warranty</div><div class="stat-value good">7yr / 100k mi</div></div>
+    </div>
+    <div class="card-footer">
+      <div class="card-note">Higher ride height than ProCeed · Better rear headroom</div>
+      <a class="view-link" href="https://www.autotrader.co.uk/car-search?make=Kia&model=XCeed&year-from=2023" target="_blank">View Listings ↗</a>
+    </div>
+  </div>
+
+  <!-- 03 Kia Sportage -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-rank">03</div>
+      <div class="card-title-block">
+        <div class="card-type">Compact SUV</div>
+        <div class="card-name">Kia Sportage</div>
+        <div class="card-spec">Gen 5 · 1.6T Mild Hybrid · ~25k+ used</div>
+      </div>
+      <div class="card-badges">
+        <span class="badge badge-mild">⚡ Mild Hybrid</span>
+        <span class="badge badge-good">7yr/100k Warranty</span>
+      </div>
+    </div>
+    <div class="card-stats">
+      <div class="stat"><div class="stat-label">Insurance</div><div class="stat-value good">Group 17–20</div></div>
+      <div class="stat"><div class="stat-label">Road Tax</div><div class="stat-value good">£195/yr</div></div>
+      <div class="stat"><div class="stat-label">Per 100 Miles</div><div class="stat-value ok">£16.50</div></div>
+      <div class="stat"><div class="stat-label">Real MPG</div><div class="stat-value">~40 mpg</div></div>
+      <div class="stat"><div class="stat-label">Boot</div><div class="stat-value good">591 L</div></div>
+      <div class="stat"><div class="stat-label">NCAP</div><div class="stat-value"><span class="stars">★★★★★</span></div></div>
+      <div class="stat"><div class="stat-label">Reliability</div><div class="stat-value good">Excellent</div></div>
+      <div class="stat"><div class="stat-label">Warranty</div><div class="stat-value good">7yr / 100k mi</div></div>
+    </div>
+    <div class="card-footer">
+      <div class="card-note">Most expensive on list to buy used</div>
+      <a class="view-link" href="https://www.autotrader.co.uk/car-search?make=Kia&model=Sportage&year-from=2022" target="_blank">View Listings ↗</a>
+    </div>
+  </div>
+
+  <!-- 04 Mazda CX-5 -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-rank">04</div>
+      <div class="card-title-block">
+        <div class="card-type">Compact SUV</div>
+        <div class="card-name">Mazda CX-5</div>
+        <div class="card-spec">2023 (23) · 2.0 e-Skyactiv G MHEV Centre-Line · ~21–25k used</div>
+      </div>
+      <div class="card-badges">
+        <span class="badge badge-mild">⚡ Mild Hybrid</span>
+      </div>
+    </div>
+    <div class="card-stats">
+      <div class="stat"><div class="stat-label">Insurance</div><div class="stat-value good">Group 17</div></div>
+      <div class="stat"><div class="stat-label">Road Tax</div><div class="stat-value good">£195/yr</div></div>
+      <div class="stat"><div class="stat-label">Per 100 Miles</div><div class="stat-value ok">£17.30</div></div>
+      <div class="stat"><div class="stat-label">Real MPG</div><div class="stat-value">~38 mpg</div></div>
+      <div class="stat"><div class="stat-label">Boot</div><div class="stat-value good">522 L</div></div>
+      <div class="stat"><div class="stat-label">NCAP</div><div class="stat-value"><span class="stars">★★★★★</span></div></div>
+      <div class="stat"><div class="stat-label">Reliability</div><div class="stat-value good">Excellent</div></div>
+      <div class="stat"><div class="stat-label">Warranty</div><div class="stat-value good">6yr / 100k mi</div></div>
+    </div>
+    <div class="card-footer">
+      <div class="card-note">Premium interior quality · Naturally aspirated — less punch</div>
+      <a class="view-link" href="https://www.autotrader.co.uk/car-search?make=Mazda&model=CX-5&year-from=2023" target="_blank">View Listings ↗</a>
+    </div>
+  </div>
+
+  <!-- 05 Mazda CX-30 -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-rank">05</div>
+      <div class="card-title-block">
+        <div class="card-type">Compact Crossover</div>
+        <div class="card-name">Mazda CX-30</div>
+        <div class="card-spec">2024 (24) · 2.0 e-Skyactiv G MHEV Prime-Line · 12,300 mi · ~19–22k used</div>
+      </div>
+      <div class="card-badges">
+        <span class="badge badge-mild">⚡ Mild Hybrid</span>
+      </div>
+    </div>
+    <div class="card-stats">
+      <div class="stat"><div class="stat-label">Insurance</div><div class="stat-value good">Group 15–16</div></div>
+      <div class="stat"><div class="stat-label">Road Tax</div><div class="stat-value good">£195/yr</div></div>
+      <div class="stat"><div class="stat-label">Per 100 Miles</div><div class="stat-value good">£15.60</div></div>
+      <div class="stat"><div class="stat-label">Real MPG</div><div class="stat-value">~42 mpg</div></div>
+      <div class="stat"><div class="stat-label">Boot</div><div class="stat-value ok">430 L</div></div>
+      <div class="stat"><div class="stat-label">NCAP</div><div class="stat-value"><span class="stars">★★★★★</span></div></div>
+      <div class="stat"><div class="stat-label">Reliability</div><div class="stat-value good">Excellent</div></div>
+      <div class="stat"><div class="stat-label">Warranty</div><div class="stat-value ok">3yr / 60k mi</div></div>
+    </div>
+    <div class="card-footer">
+      <div class="card-note">Fun to drive · Better for 2 adults than families</div>
+      <a class="view-link" href="https://www.autotrader.co.uk/car-search?make=Mazda&model=CX-30&year-from=2024" target="_blank">View Listings ↗</a>
+    </div>
+  </div>
+
+  <!-- 06 Skoda Karoq -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-rank">06</div>
+      <div class="card-title-block">
+        <div class="card-type">Compact SUV</div>
+        <div class="card-name">Škoda Karoq</div>
+        <div class="card-spec">2023 · 2.0 TDI SE Drive · ~20–24k used</div>
+      </div>
+      <div class="card-badges">
+        <span class="badge badge-diesel">🛢️ Diesel</span>
+      </div>
+    </div>
+    <div class="card-stats">
+      <div class="stat"><div class="stat-label">Insurance</div><div class="stat-value good">Group 15</div></div>
+      <div class="stat"><div class="stat-label">Road Tax</div><div class="stat-value good">£195/yr</div></div>
+      <div class="stat"><div class="stat-label">Per 100 Miles</div><div class="stat-value good">£14.80</div></div>
+      <div class="stat"><div class="stat-label">Real MPG</div><div class="stat-value">~46 mpg</div></div>
+      <div class="stat"><div class="stat-label">Boot</div><div class="stat-value good">588 L</div></div>
+      <div class="stat"><div class="stat-label">NCAP</div><div class="stat-value"><span class="stars">★★★★★</span></div></div>
+      <div class="stat"><div class="stat-label">Reliability</div><div class="stat-value good">Very Good</div></div>
+      <div class="stat"><div class="stat-label">Warranty</div><div class="stat-value ok">3yr / 60k mi</div></div>
+    </div>
+    <div class="card-footer">
+      <div class="card-note">VW Group quality · No hybrid option</div>
+      <a class="view-link" href="https://www.autotrader.co.uk/car-search?make=Skoda&model=Karoq&year-from=2023" target="_blank">View Listings ↗</a>
+    </div>
+  </div>
+
+  <!-- 07 SEAT Ateca -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-rank">07</div>
+      <div class="card-title-block">
+        <div class="card-type">Compact SUV</div>
+        <div class="card-name">SEAT Ateca</div>
+        <div class="card-spec">2023 (73) · 1.5 TSI EVO Xperience DSG · ~20–24k used</div>
+      </div>
+      <div class="card-badges">
+        <span class="badge badge-petrol">⛽ Petrol</span>
+      </div>
+    </div>
+    <div class="card-stats">
+      <div class="stat"><div class="stat-label">Insurance</div><div class="stat-value good">Group 18</div></div>
+      <div class="stat"><div class="stat-label">Road Tax</div><div class="stat-value good">£195/yr</div></div>
+      <div class="stat"><div class="stat-label">Per 100 Miles</div><div class="stat-value ok">£16.50</div></div>
+      <div class="stat"><div class="stat-label">Real MPG</div><div class="stat-value">~40 mpg</div></div>
+      <div class="stat"><div class="stat-label">Boot</div><div class="stat-value good">510 L</div></div>
+      <div class="stat"><div class="stat-label">NCAP</div><div class="stat-value"><span class="stars">★★★★★</span></div></div>
+      <div class="stat"><div class="stat-label">Reliability</div><div class="stat-value good">Very Good</div></div>
+      <div class="stat"><div class="stat-label">Warranty</div><div class="stat-value ok">3yr / 60k mi</div></div>
+    </div>
+    <div class="card-footer">
+      <div class="card-note">End of production · Final year examples available</div>
+      <a class="view-link" href="https://www.autotrader.co.uk/car-search?make=SEAT&model=Ateca&year-from=2023" target="_blank">View Listings ↗</a>
+    </div>
+  </div>
+
+  <!-- 08 Nissan Qashqai -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-rank">08</div>
+      <div class="card-title-block">
+        <div class="card-type">Compact SUV</div>
+        <div class="card-name">Nissan Qashqai</div>
+        <div class="card-spec">2024 (74) · 1.3 DiG-T MH Acenta Premium · 3,201 mi · ~24–26k used</div>
+      </div>
+      <div class="card-badges">
+        <span class="badge badge-mild">⚡ Mild Hybrid</span>
+      </div>
+    </div>
+    <div class="card-stats">
+      <div class="stat"><div class="stat-label">Insurance</div><div class="stat-value good">Group 19</div></div>
+      <div class="stat"><div class="stat-label">Road Tax</div><div class="stat-value good">£195/yr</div></div>
+      <div class="stat"><div class="stat-label">Per 100 Miles</div><div class="stat-value ok">£15.70</div></div>
+      <div class="stat"><div class="stat-label">Real MPG</div><div class="stat-value">~42 mpg</div></div>
+      <div class="stat"><div class="stat-label">Boot</div><div class="stat-value ok">504 L</div></div>
+      <div class="stat"><div class="stat-label">NCAP</div><div class="stat-value"><span class="stars">★★★★★</span></div></div>
+      <div class="stat"><div class="stat-label">Reliability</div><div class="stat-value ok">Good</div></div>
+      <div class="stat"><div class="stat-label">Warranty</div><div class="stat-value ok">3yr / 60k mi</div></div>
+    </div>
+    <div class="card-footer">
+      <div class="card-note">Acenta Premium misses Google infotainment — N-Connecta better</div>
+      <a class="view-link" href="https://www.autotrader.co.uk/car-search?make=Nissan&model=Qashqai&year-from=2024" target="_blank">View Listings ↗</a>
+    </div>
+  </div>
+
+  <!-- 09 Peugeot 308 -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-rank">09</div>
+      <div class="card-title-block">
+        <div class="card-type">Family Hatchback</div>
+        <div class="card-name">Peugeot 308</div>
+        <div class="card-spec">2024 (24) · 1.2 PureTech Allure EAT8 · 10,366 mi · ~19–22k used</div>
+      </div>
+      <div class="card-badges">
+        <span class="badge badge-petrol">⛽ Petrol</span>
+      </div>
+    </div>
+    <div class="card-stats">
+      <div class="stat"><div class="stat-label">Insurance</div><div class="stat-value good">Group 19</div></div>
+      <div class="stat"><div class="stat-label">Road Tax</div><div class="stat-value good">£195/yr</div></div>
+      <div class="stat"><div class="stat-label">Per 100 Miles</div><div class="stat-value good">£14.60</div></div>
+      <div class="stat"><div class="stat-label">Real MPG</div><div class="stat-value">~45 mpg</div></div>
+      <div class="stat"><div class="stat-label">Boot</div><div class="stat-value ok">412 L</div></div>
+      <div class="stat"><div class="stat-label">NCAP</div><div class="stat-value"><span class="stars">★★★★</span><span class="stars dim">★</span></div></div>
+      <div class="stat"><div class="stat-label">Reliability</div><div class="stat-value ok">Good</div></div>
+      <div class="stat"><div class="stat-label">Warranty</div><div class="stat-value ok">3yr / 60k mi</div></div>
+    </div>
+    <div class="card-footer">
+      <div class="card-note">Hatchback, not SUV · Excellent running costs</div>
+      <a class="view-link" href="https://www.autotrader.co.uk/car-search?make=Peugeot&model=308&year-from=2024" target="_blank">View Listings ↗</a>
+    </div>
+  </div>
+
+  <!-- 10 Ford Focus Active X -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-rank">10</div>
+      <div class="card-title-block">
+        <div class="card-type">Raised Hatchback</div>
+        <div class="card-name">Ford Focus Active X</div>
+        <div class="card-spec">2024 (73/24) · 1.0 EcoBoost mHEV 155 Auto · ~20–22k used</div>
+      </div>
+      <div class="card-badges">
+        <span class="badge badge-mild">⚡ Mild Hybrid</span>
+        <span class="badge badge-warn">⚠ Discontinued</span>
+      </div>
+    </div>
+    <div class="card-stats">
+      <div class="stat"><div class="stat-label">Insurance</div><div class="stat-value good">Group 17</div></div>
+      <div class="stat"><div class="stat-label">Road Tax</div><div class="stat-value good">£195/yr</div></div>
+      <div class="stat"><div class="stat-label">Per 100 Miles</div><div class="stat-value good">£15.10</div></div>
+      <div class="stat"><div class="stat-label">Real MPG</div><div class="stat-value">~45 mpg</div></div>
+      <div class="stat"><div class="stat-label">Boot</div><div class="stat-value ok">375 L</div></div>
+      <div class="stat"><div class="stat-label">NCAP</div><div class="stat-value"><span class="stars">★★★★★</span></div></div>
+      <div class="stat"><div class="stat-label">Reliability</div><div class="stat-value ok">Good</div></div>
+      <div class="stat"><div class="stat-label">Warranty</div><div class="stat-value ok">3yr / 60k mi</div></div>
+    </div>
+    <div class="card-footer">
+      <div class="card-note">Last of breed · Great driver's car · Model killed off</div>
+      <a class="view-link" href="https://www.autotrader.co.uk/car-search?make=Ford&model=Focus&year-from=2023" target="_blank">View Listings ↗</a>
+    </div>
+  </div>
+
+  <!-- 11 Vauxhall Frontera EV -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-rank">11</div>
+      <div class="card-title-block">
+        <div class="card-type">Compact SUV · Electric</div>
+        <div class="card-name">Vauxhall Frontera Electric</div>
+        <div class="card-spec">44kWh · New from £22,495</div>
+      </div>
+      <div class="card-badges">
+        <span class="badge badge-ev">🔋 Full EV</span>
+      </div>
+    </div>
+    <div class="card-stats">
+      <div class="stat"><div class="stat-label">Insurance</div><div class="stat-value good">Group 14–15</div></div>
+      <div class="stat"><div class="stat-label">Road Tax</div><div class="stat-value ok">£195/yr</div></div>
+      <div class="stat"><div class="stat-label">Per 100 Miles</div><div class="stat-value ev">£7.05 (home)</div></div>
+      <div class="stat"><div class="stat-label">Efficiency</div><div class="stat-value">3.4 mi/kWh</div></div>
+      <div class="stat"><div class="stat-label">Boot</div><div class="stat-value ok">460 L</div></div>
+      <div class="stat"><div class="stat-label">NCAP</div><div class="stat-value"><span class="stars dim">Not tested</span></div></div>
+      <div class="stat"><div class="stat-label">Reliability</div><div class="stat-value ok">Unknown</div></div>
+      <div class="stat"><div class="stat-label">Warranty</div><div class="stat-value ok">3yr · Battery 8yr</div></div>
+    </div>
+    <div class="card-footer">
+      <div class="card-note">188mi range · No heat pump · 7-seat option available</div>
+      <a class="view-link" href="https://www.autotrader.co.uk/car-search?make=Vauxhall&model=Frontera" target="_blank">View Listings ↗</a>
+    </div>
+  </div>
+
+  <!-- 12 Renault Arkana -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-rank">12</div>
+      <div class="card-title-block">
+        <div class="card-type">Coupe SUV</div>
+        <div class="card-name">Renault Arkana</div>
+        <div class="card-spec">2024 (24) · 1.6 E-Tech FHEV 145 Techno · ~19–23k used</div>
+      </div>
+      <div class="card-badges">
+        <span class="badge badge-full">⚡ Full Hybrid</span>
+      </div>
+    </div>
+    <div class="card-stats">
+      <div class="stat"><div class="stat-label">Insurance</div><div class="stat-value good">Group 16</div></div>
+      <div class="stat"><div class="stat-label">Road Tax</div><div class="stat-value good">£165/yr</div></div>
+      <div class="stat"><div class="stat-label">Per 100 Miles</div><div class="stat-value good">£14.80</div></div>
+      <div class="stat"><div class="stat-label">Real MPG</div><div class="stat-value">~44 mpg</div></div>
+      <div class="stat"><div class="stat-label">Boot</div><div class="stat-value ok">480 L</div></div>
+      <div class="stat"><div class="stat-label">NCAP</div><div class="stat-value"><span class="stars">★★★★★</span></div></div>
+      <div class="stat"><div class="stat-label">Reliability</div><div class="stat-value ok">Good</div></div>
+      <div class="stat"><div class="stat-label">Warranty</div><div class="stat-value ok">3yr / 60k mi</div></div>
+    </div>
+    <div class="card-footer">
+      <div class="card-note">Outgoing gen · Gearbox jerky uphill · Lower road tax</div>
+      <a class="view-link" href="https://www.autotrader.co.uk/car-search?make=Renault&model=Arkana&year-from=2024" target="_blank">View Listings ↗</a>
+    </div>
+  </div>
+
+  <!-- 13 Dacia Jogger HEV -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-rank">13</div>
+      <div class="card-title-block">
+        <div class="card-type">MPV / Estate · 7 Seats</div>
+        <div class="card-name">Dacia Jogger HEV Extreme</div>
+        <div class="card-spec">2024 (24) · 1.6 HEV Auto · ~18–21k used</div>
+      </div>
+      <div class="card-badges">
+        <span class="badge badge-full">⚡ Full Hybrid</span>
+        <span class="badge badge-warn">⚠ 1-Star NCAP</span>
+      </div>
+    </div>
+    <div class="card-stats">
+      <div class="stat"><div class="stat-label">Insurance</div><div class="stat-value good">Group 16</div></div>
+      <div class="stat"><div class="stat-label">Road Tax</div><div class="stat-value good">£165/yr</div></div>
+      <div class="stat"><div class="stat-label">Per 100 Miles</div><div class="stat-value good">£12.60</div></div>
+      <div class="stat"><div class="stat-label">Real MPG</div><div class="stat-value">~52 mpg</div></div>
+      <div class="stat"><div class="stat-label">Boot</div><div class="stat-value good">700+ L</div></div>
+      <div class="stat"><div class="stat-label">NCAP</div><div class="stat-value bad">★ (1 star!)</div></div>
+      <div class="stat"><div class="stat-label">Reliability</div><div class="stat-value ok">Good</div></div>
+      <div class="stat"><div class="stat-label">Warranty</div><div class="stat-value ok">3yr / 60k mi</div></div>
+    </div>
+    <div class="card-footer">
+      <div class="card-note">⚠ 1-star NCAP is a serious safety concern for families</div>
+      <a class="view-link" href="https://www.autotrader.co.uk/car-search?make=Dacia&model=Jogger&year-from=2024" target="_blank">View Listings ↗</a>
+    </div>
+  </div>
+
+  <!-- 14 Peugeot 3008 Hybrid -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-rank">14</div>
+      <div class="card-title-block">
+        <div class="card-type">Compact SUV</div>
+        <div class="card-name">Peugeot 3008</div>
+        <div class="card-spec">2024 (73/24) · 1.2 Hybrid 136 Active e-DSC6 · ~20–25k used</div>
+      </div>
+      <div class="card-badges">
+        <span class="badge badge-mild">⚡ 48V Mild Hybrid</span>
+      </div>
+    </div>
+    <div class="card-stats">
+      <div class="stat"><div class="stat-label">Insurance</div><div class="stat-value ok">Group 21–22</div></div>
+      <div class="stat"><div class="stat-label">Road Tax</div><div class="stat-value good">£175/yr</div></div>
+      <div class="stat"><div class="stat-label">Per 100 Miles</div><div class="stat-value ok">£15.60</div></div>
+      <div class="stat"><div class="stat-label">Real MPG</div><div class="stat-value">~42 mpg</div></div>
+      <div class="stat"><div class="stat-label">Boot</div><div class="stat-value good">588 L</div></div>
+      <div class="stat"><div class="stat-label">NCAP</div><div class="stat-value"><span class="stars">★★★★★</span></div></div>
+      <div class="stat"><div class="stat-label">Reliability</div><div class="stat-value ok">Good</div></div>
+      <div class="stat"><div class="stat-label">Warranty</div><div class="stat-value ok">3yr / 60k mi</div></div>
+    </div>
+    <div class="card-footer">
+      <div class="card-note">Outgoing gen · 48V mild hybrid only — modest savings</div>
+      <a class="view-link" href="https://www.autotrader.co.uk/car-search?make=Peugeot&model=3008&year-from=2023" target="_blank">View Listings ↗</a>
+    </div>
+  </div>
+
+  <!-- 15 Citroën C5 Aircross -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-rank">15</div>
+      <div class="card-title-block">
+        <div class="card-type">Mid-Size SUV</div>
+        <div class="card-name">Citroën C5 Aircross</div>
+        <div class="card-spec">2024 · 1.2 Hybrid 136 E-series e-DSC6 · ~20–24k used</div>
+      </div>
+      <div class="card-badges">
+        <span class="badge badge-mild">⚡ 48V Mild Hybrid</span>
+      </div>
+    </div>
+    <div class="card-stats">
+      <div class="stat"><div class="stat-label">Insurance</div><div class="stat-value ok">Group 22–24</div></div>
+      <div class="stat"><div class="stat-label">Road Tax</div><div class="stat-value good">£175/yr</div></div>
+      <div class="stat"><div class="stat-label">Per 100 Miles</div><div class="stat-value ok">£15.60</div></div>
+      <div class="stat"><div class="stat-label">Real MPG</div><div class="stat-value">~43 mpg</div></div>
+      <div class="stat"><div class="stat-label">Boot</div><div class="stat-value good">651 L ★</div></div>
+      <div class="stat"><div class="stat-label">NCAP</div><div class="stat-value"><span class="stars">★★★★</span><span class="stars dim">★</span></div></div>
+      <div class="stat"><div class="stat-label">Reliability</div><div class="stat-value ok">Good</div></div>
+      <div class="stat"><div class="stat-label">Warranty</div><div class="stat-value ok">3yr / 60k mi</div></div>
+    </div>
+    <div class="card-footer">
+      <div class="card-note">Biggest boot in list · Most comfortable ride · Outgoing gen</div>
+      <a class="view-link" href="https://www.autotrader.co.uk/car-search?make=Citroen&model=C5+Aircross&year-from=2024" target="_blank">View Listings ↗</a>
+    </div>
+  </div>
+
+  <!-- 16 Vauxhall Grandland PHEV -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-rank">16</div>
+      <div class="card-title-block">
+        <div class="card-type">Mid-Size SUV · Plug-in Hybrid</div>
+        <div class="card-name">Vauxhall Grandland PHEV</div>
+        <div class="card-spec">2024 (74) · 1.6 Plug-in Hybrid Ultimate Auto · ~22–27k used</div>
+      </div>
+      <div class="card-badges">
+        <span class="badge badge-phev">🔌 Plug-in Hybrid</span>
+      </div>
+    </div>
+    <div class="card-stats">
+      <div class="stat"><div class="stat-label">Insurance</div><div class="stat-value ok">Group 28–30</div></div>
+      <div class="stat"><div class="stat-label">Road Tax</div><div class="stat-value good">£155/yr</div></div>
+      <div class="stat"><div class="stat-label">Per 100 Miles</div><div class="stat-value ev">£5 (home+elec)</div></div>
+      <div class="stat"><div class="stat-label">EV Range</div><div class="stat-value">23–28 mi real</div></div>
+      <div class="stat"><div class="stat-label">Boot</div><div class="stat-value ok">390 L</div></div>
+      <div class="stat"><div class="stat-label">NCAP</div><div class="stat-value"><span class="stars">★★★★★</span></div></div>
+      <div class="stat"><div class="stat-label">Reliability</div><div class="stat-value ok">Average</div></div>
+      <div class="stat"><div class="stat-label">Warranty</div><div class="stat-value ok">3yr · Hybrid 8yr</div></div>
+    </div>
+    <div class="card-footer">
+      <div class="card-note">Only worth it if you charge daily · Smaller boot than petrol</div>
+      <a class="view-link" href="https://www.autotrader.co.uk/car-search?make=Vauxhall&model=Grandland&year-from=2024" target="_blank">View Listings ↗</a>
+    </div>
+  </div>
+
+  <!-- 17 Jeep Avenger e-Hybrid -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-rank">17</div>
+      <div class="card-title-block">
+        <div class="card-type">Compact SUV</div>
+        <div class="card-name">Jeep Avenger</div>
+        <div class="card-spec">2025 (74) · 1.2 e-Hybrid Summit DCT · ~£28,945 new</div>
+      </div>
+      <div class="card-badges">
+        <span class="badge badge-mild">⚡ Mild Hybrid</span>
+      </div>
+    </div>
+    <div class="card-stats">
+      <div class="stat"><div class="stat-label">Insurance</div><div class="stat-value ok">Group 24</div></div>
+      <div class="stat"><div class="stat-label">Road Tax</div><div class="stat-value good">£145/yr</div></div>
+      <div class="stat"><div class="stat-label">Per 100 Miles</div><div class="stat-value good">£11.40</div></div>
+      <div class="stat"><div class="stat-label">Real MPG</div><div class="stat-value">~42 mpg</div></div>
+      <div class="stat"><div class="stat-label">Boot</div><div class="stat-value bad">321 L</div></div>
+      <div class="stat"><div class="stat-label">NCAP</div><div class="stat-value"><span class="stars">★★★★★</span></div></div>
+      <div class="stat"><div class="stat-label">Reliability</div><div class="stat-value ok">Average</div></div>
+      <div class="stat"><div class="stat-label">Warranty</div><div class="stat-value ok">3yr / 60k mi</div></div>
+    </div>
+    <div class="card-footer">
+      <div class="card-note">Best petrol running costs · Smallest boot in list</div>
+      <a class="view-link" href="https://www.autotrader.co.uk/car-search?make=Jeep&model=Avenger&year-from=2024" target="_blank">View Listings ↗</a>
+    </div>
+  </div>
+
+  <!-- 18 MG S5 EV -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-rank">18</div>
+      <div class="card-title-block">
+        <div class="card-type">Compact SUV · Electric</div>
+        <div class="card-name">MG S5 EV</div>
+        <div class="card-spec">SE Standard Range · 49kWh · £28,495 new</div>
+      </div>
+      <div class="card-badges">
+        <span class="badge badge-ev">🔋 Full EV</span>
+      </div>
+    </div>
+    <div class="card-stats">
+      <div class="stat"><div class="stat-label">Insurance</div><div class="stat-value bad">Group 29</div></div>
+      <div class="stat"><div class="stat-label">Road Tax</div><div class="stat-value ok">£195/yr</div></div>
+      <div class="stat"><div class="stat-label">Per 100 Miles</div><div class="stat-value ev">£6.85 (home)</div></div>
+      <div class="stat"><div class="stat-label">Real Range</div><div class="stat-value">~240 mi</div></div>
+      <div class="stat"><div class="stat-label">Boot</div><div class="stat-value ok">453 L</div></div>
+      <div class="stat"><div class="stat-label">NCAP</div><div class="stat-value"><span class="stars">★★★★★</span></div></div>
+      <div class="stat"><div class="stat-label">Reliability</div><div class="stat-value ok">Unknown</div></div>
+      <div class="stat"><div class="stat-label">Warranty</div><div class="stat-value good">7yr / 80k mi</div></div>
+    </div>
+    <div class="card-footer">
+      <div class="card-note">Best EV running costs · High insurance group</div>
+      <a class="view-link" href="https://www.autotrader.co.uk/car-search?make=MG&model=S5" target="_blank">View Listings ↗</a>
+    </div>
+  </div>
+
+  <!-- 19 MG HS -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-rank">19</div>
+      <div class="card-title-block">
+        <div class="card-type">Large SUV</div>
+        <div class="card-name">MG HS</div>
+        <div class="card-spec">2025 (25) · 1.5 T-GDI Trophy DCT · ~£28k+ used</div>
+      </div>
+      <div class="card-badges">
+        <span class="badge badge-petrol">⛽ Petrol</span>
+      </div>
+    </div>
+    <div class="card-stats">
+      <div class="stat"><div class="stat-label">Insurance</div><div class="stat-value bad">Group 25</div></div>
+      <div class="stat"><div class="stat-label">Road Tax</div><div class="stat-value ok">£195/yr</div></div>
+      <div class="stat"><div class="stat-label">Per 100 Miles</div><div class="stat-value bad">£17.40</div></div>
+      <div class="stat"><div class="stat-label">Real MPG</div><div class="stat-value">~38 mpg</div></div>
+      <div class="stat"><div class="stat-label">Boot</div><div class="stat-value good">507 L</div></div>
+      <div class="stat"><div class="stat-label">NCAP</div><div class="stat-value"><span class="stars">★★★★★</span></div></div>
+      <div class="stat"><div class="stat-label">Reliability</div><div class="stat-value ok">Average</div></div>
+      <div class="stat"><div class="stat-label">Warranty</div><div class="stat-value good">7yr / 80k mi</div></div>
+    </div>
+    <div class="card-footer">
+      <div class="card-note">Jerky DCT gearbox noted · Biggest MG · Priciest to run</div>
+      <a class="view-link" href="https://www.autotrader.co.uk/car-search?make=MG&model=HS&year-from=2025" target="_blank">View Listings ↗</a>
+    </div>
+  </div>
+
+  <!-- 20 Vauxhall Grandland 1.2 -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-rank">20</div>
+      <div class="card-title-block">
+        <div class="card-type">Mid-Size SUV</div>
+        <div class="card-name">Vauxhall Grandland 1.2</div>
+        <div class="card-spec">2023 (73) · 1.2 Turbo Ultimate Auto · ~18–22k used</div>
+      </div>
+      <div class="card-badges">
+        <span class="badge badge-petrol">⛽ Petrol</span>
+        <span class="badge badge-warn">⚠ Engine Recall</span>
+      </div>
+    </div>
+    <div class="card-stats">
+      <div class="stat"><div class="stat-label">Insurance</div><div class="stat-value bad">Group 25</div></div>
+      <div class="stat"><div class="stat-label">Road Tax</div><div class="stat-value ok">£195/yr</div></div>
+      <div class="stat"><div class="stat-label">Per 100 Miles</div><div class="stat-value ok">£16.40</div></div>
+      <div class="stat"><div class="stat-label">Real MPG</div><div class="stat-value">~40 mpg</div></div>
+      <div class="stat"><div class="stat-label">Boot</div><div class="stat-value ok">514 L</div></div>
+      <div class="stat"><div class="stat-label">NCAP</div><div class="stat-value"><span class="stars">★★★★★</span></div></div>
+      <div class="stat"><div class="stat-label">Reliability</div><div class="stat-value bad">Below Avg</div></div>
+      <div class="stat"><div class="stat-label">Warranty</div><div class="stat-value ok">3yr / 60k mi</div></div>
+    </div>
+    <div class="card-footer">
+      <div class="card-note">⚠ 2026 engine fire recall · 1.2 engine reliability concerns</div>
+      <a class="view-link" href="https://www.autotrader.co.uk/car-search?make=Vauxhall&model=Grandland&year-from=2023" target="_blank">View Listings ↗</a>
+    </div>
+  </div>
+
+  <!-- 21 Dacia Duster Bi-Fuel -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-rank">21</div>
+      <div class="card-title-block">
+        <div class="card-type">Compact SUV</div>
+        <div class="card-name">Dacia Duster Bi-Fuel</div>
+        <div class="card-spec">2023 (73) · 1.0 TCe 100 Bi-Fuel Extreme · ~£13k used</div>
+      </div>
+      <div class="card-badges">
+        <span class="badge badge-lpg">⛽ Petrol + LPG</span>
+        <span class="badge badge-warn">⚠ 3-Star NCAP</span>
+      </div>
+    </div>
+    <div class="card-stats">
+      <div class="stat"><div class="stat-label">Insurance</div><div class="stat-value good">Group 13</div></div>
+      <div class="stat"><div class="stat-label">Road Tax</div><div class="stat-value ok">£195/yr</div></div>
+      <div class="stat"><div class="stat-label">Per 100 Miles</div><div class="stat-value ev">£7.80 (LPG)</div></div>
+      <div class="stat"><div class="stat-label">Real MPG</div><div class="stat-value">~43 petrol</div></div>
+      <div class="stat"><div class="stat-label">Boot</div><div class="stat-value ok">445 L</div></div>
+      <div class="stat"><div class="stat-label">NCAP</div><div class="stat-value ok">★★★ (3 stars)</div></div>
+      <div class="stat"><div class="stat-label">Reliability</div><div class="stat-value ok">Good</div></div>
+      <div class="stat"><div class="stat-label">Warranty</div><div class="stat-value ok">3yr / 60k mi</div></div>
+    </div>
+    <div class="card-footer">
+      <div class="card-note">⚠ LPG pumps declining · Can't use Channel Tunnel</div>
+      <a class="view-link" href="https://www.autotrader.co.uk/car-search?make=Dacia&model=Duster&year-from=2023" target="_blank">View Listings ↗</a>
+    </div>
+  </div>
+
+  <!-- 22 OMODA 5 -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-rank">22</div>
+      <div class="card-title-block">
+        <div class="card-type">Compact SUV</div>
+        <div class="card-name">OMODA 5</div>
+        <div class="card-spec">2024 (24) · 1.6 TGDI Comfort 7DCT · ~£19k used</div>
+      </div>
+      <div class="card-badges">
+        <span class="badge badge-petrol">⛽ Petrol</span>
+      </div>
+    </div>
+    <div class="card-stats">
+      <div class="stat"><div class="stat-label">Insurance</div><div class="stat-value bad">Group 32</div></div>
+      <div class="stat"><div class="stat-label">Road Tax</div><div class="stat-value ok">£195/yr</div></div>
+      <div class="stat"><div class="stat-label">Per 100 Miles</div><div class="stat-value bad">£21.20</div></div>
+      <div class="stat"><div class="stat-label">Real MPG</div><div class="stat-value bad">~31 mpg</div></div>
+      <div class="stat"><div class="stat-label">Boot</div><div class="stat-value ok">380 L</div></div>
+      <div class="stat"><div class="stat-label">NCAP</div><div class="stat-value"><span class="stars">★★★★★</span></div></div>
+      <div class="stat"><div class="stat-label">Reliability</div><div class="stat-value ok">Unknown</div></div>
+      <div class="stat"><div class="stat-label">Warranty</div><div class="stat-value ok">3yr / 60k mi</div></div>
+    </div>
+    <div class="card-footer">
+      <div class="card-note">Cheapest to buy · Most expensive petrol to run · High insurance</div>
+      <a class="view-link" href="https://www.autotrader.co.uk/car-search?make=Omoda&model=5" target="_blank">View Listings ↗</a>
+    </div>
+  </div>
+
+  <!-- 23 Hyundai Tucson -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-rank">23</div>
+      <div class="card-title-block">
+        <div class="card-type">Compact SUV</div>
+        <div class="card-name">Hyundai Tucson</div>
+        <div class="card-spec">2022/2023 · 1.6T Mild Hybrid · ~17–22k used</div>
+      </div>
+      <div class="card-badges">
+        <span class="badge badge-mild">⚡ Mild Hybrid</span>
+        <span class="badge badge-good">5yr Unlimited Warranty</span>
+      </div>
+    </div>
+    <div class="card-stats">
+      <div class="stat"><div class="stat-label">Insurance</div><div class="stat-value good">Group 18–20</div></div>
+      <div class="stat"><div class="stat-label">Road Tax</div><div class="stat-value good">£195/yr</div></div>
+      <div class="stat"><div class="stat-label">Per 100 Miles</div><div class="stat-value ok">£15.70</div></div>
+      <div class="stat"><div class="stat-label">Real MPG</div><div class="stat-value">~42 mpg</div></div>
+      <div class="stat"><div class="stat-label">Boot</div><div class="stat-value good">620 L</div></div>
+      <div class="stat"><div class="stat-label">NCAP</div><div class="stat-value"><span class="stars">★★★★★</span></div></div>
+      <div class="stat"><div class="stat-label">Reliability</div><div class="stat-value good">Very Good</div></div>
+      <div class="stat"><div class="stat-label">Warranty</div><div class="stat-value good">5yr / Unlimited mi</div></div>
+    </div>
+    <div class="card-footer">
+      <div class="card-note">Kia Sportage twin — often £2–3k cheaper used · Larger boot</div>
+      <a class="view-link" href="https://www.autotrader.co.uk/car-search?make=Hyundai&model=Tucson&year-from=2021" target="_blank">View Listings ↗</a>
+    </div>
+  </div>
+
+  <!-- 24 Toyota Yaris Cross -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-rank">24</div>
+      <div class="card-title-block">
+        <div class="card-type">Subcompact SUV</div>
+        <div class="card-name">Toyota Yaris Cross</div>
+        <div class="card-spec">2022/2023 · 1.5 Hybrid · ~16–20k used</div>
+      </div>
+      <div class="card-badges">
+        <span class="badge badge-full">⚡ Full Hybrid</span>
+      </div>
+    </div>
+    <div class="card-stats">
+      <div class="stat"><div class="stat-label">Insurance</div><div class="stat-value good">Group 11–13</div></div>
+      <div class="stat"><div class="stat-label">Road Tax</div><div class="stat-value good">£185/yr</div></div>
+      <div class="stat"><div class="stat-label">Per 100 Miles</div><div class="stat-value good">£10.40</div></div>
+      <div class="stat"><div class="stat-label">Real MPG</div><div class="stat-value good">~60 mpg</div></div>
+      <div class="stat"><div class="stat-label">Boot</div><div class="stat-value ok">397 L</div></div>
+      <div class="stat"><div class="stat-label">NCAP</div><div class="stat-value"><span class="stars">★★★★★</span></div></div>
+      <div class="stat"><div class="stat-label">Reliability</div><div class="stat-value good">Excellent</div></div>
+      <div class="stat"><div class="stat-label">Warranty</div><div class="stat-value good">Up to 10yr w/ service</div></div>
+    </div>
+    <div class="card-footer">
+      <div class="card-note">Lowest insurance on list · Best non-EV MPG · Smaller SUV</div>
+      <a class="view-link" href="https://www.autotrader.co.uk/car-search?make=Toyota&model=Yaris+Cross&year-from=2022" target="_blank">View Listings ↗</a>
+    </div>
+  </div>
+
+  <!-- 25 Toyota C-HR -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-rank">25</div>
+      <div class="card-title-block">
+        <div class="card-type">Coupe SUV</div>
+        <div class="card-name">Toyota C-HR</div>
+        <div class="card-spec">2022/2023 · 1.8 Hybrid · ~16–20k used</div>
+      </div>
+      <div class="card-badges">
+        <span class="badge badge-full">⚡ Full Hybrid</span>
+      </div>
+    </div>
+    <div class="card-stats">
+      <div class="stat"><div class="stat-label">Insurance</div><div class="stat-value good">Group 14–17</div></div>
+      <div class="stat"><div class="stat-label">Road Tax</div><div class="stat-value good">£185/yr</div></div>
+      <div class="stat"><div class="stat-label">Per 100 Miles</div><div class="stat-value good">£11.00</div></div>
+      <div class="stat"><div class="stat-label">Real MPG</div><div class="stat-value good">~56 mpg</div></div>
+      <div class="stat"><div class="stat-label">Boot</div><div class="stat-value bad">377 L</div></div>
+      <div class="stat"><div class="stat-label">NCAP</div><div class="stat-value"><span class="stars">★★★★★</span></div></div>
+      <div class="stat"><div class="stat-label">Reliability</div><div class="stat-value good">Excellent</div></div>
+      <div class="stat"><div class="stat-label">Warranty</div><div class="stat-value good">Up to 10yr w/ service</div></div>
+    </div>
+    <div class="card-footer">
+      <div class="card-note">Outstanding economy · Small boot · Dark rear cabin for kids</div>
+      <a class="view-link" href="https://www.autotrader.co.uk/car-search?make=Toyota&model=C-HR&year-from=2021" target="_blank">View Listings ↗</a>
+    </div>
+  </div>
+
+  <!-- 26 VW T-Roc -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-rank">26</div>
+      <div class="card-title-block">
+        <div class="card-type">Compact SUV</div>
+        <div class="card-name">Volkswagen T-Roc</div>
+        <div class="card-spec">2022/2023 · 1.5 TSI EVO · ~18–23k used</div>
+      </div>
+      <div class="card-badges">
+        <span class="badge badge-petrol">⛽ Petrol</span>
+      </div>
+    </div>
+    <div class="card-stats">
+      <div class="stat"><div class="stat-label">Insurance</div><div class="stat-value good">Group 17–19</div></div>
+      <div class="stat"><div class="stat-label">Road Tax</div><div class="stat-value good">£195/yr</div></div>
+      <div class="stat"><div class="stat-label">Per 100 Miles</div><div class="stat-value ok">£15.50</div></div>
+      <div class="stat"><div class="stat-label">Real MPG</div><div class="stat-value">~42 mpg</div></div>
+      <div class="stat"><div class="stat-label">Boot</div><div class="stat-value ok">445 L</div></div>
+      <div class="stat"><div class="stat-label">NCAP</div><div class="stat-value"><span class="stars">★★★★★</span></div></div>
+      <div class="stat"><div class="stat-label">Reliability</div><div class="stat-value ok">Good</div></div>
+      <div class="stat"><div class="stat-label">Warranty</div><div class="stat-value ok">3yr / 60k mi</div></div>
+    </div>
+    <div class="card-footer">
+      <div class="card-note">Stylish VW Group · No hybrid option · Strong resale values</div>
+      <a class="view-link" href="https://www.autotrader.co.uk/car-search?make=Volkswagen&model=T-Roc&year-from=2022" target="_blank">View Listings ↗</a>
+    </div>
+  </div>
+
+  <!-- 27 Honda HR-V -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-rank">27</div>
+      <div class="card-title-block">
+        <div class="card-type">Compact SUV</div>
+        <div class="card-name">Honda HR-V</div>
+        <div class="card-spec">2022/2023 · 1.5 i-MMD Full Hybrid · ~19–23k used</div>
+      </div>
+      <div class="card-badges">
+        <span class="badge badge-full">⚡ Full Hybrid</span>
+        <span class="badge badge-warn">⚠ High Ins. Group</span>
+      </div>
+    </div>
+    <div class="card-stats">
+      <div class="stat"><div class="stat-label">Insurance</div><div class="stat-value bad">Group 30–33</div></div>
+      <div class="stat"><div class="stat-label">Road Tax</div><div class="stat-value good">£185/yr</div></div>
+      <div class="stat"><div class="stat-label">Per 100 Miles</div><div class="stat-value good">£12.50</div></div>
+      <div class="stat"><div class="stat-label">Real MPG</div><div class="stat-value good">~52 mpg</div></div>
+      <div class="stat"><div class="stat-label">Boot</div><div class="stat-value ok">437 L</div></div>
+      <div class="stat"><div class="stat-label">NCAP</div><div class="stat-value"><span class="stars">★★★★</span><span class="stars dim">★</span></div></div>
+      <div class="stat"><div class="stat-label">Reliability</div><div class="stat-value good">Very Good</div></div>
+      <div class="stat"><div class="stat-label">Warranty</div><div class="stat-value ok">3yr / 90k mi</div></div>
+    </div>
+    <div class="card-footer">
+      <div class="card-note">⚠ Insurance group 30–33 is very high — check your quote first</div>
+      <a class="view-link" href="https://www.autotrader.co.uk/car-search?make=Honda&model=HR-V&year-from=2022" target="_blank">View Listings ↗</a>
+    </div>
+  </div>
+
+  <!-- 28 Citroën C4 -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-rank">28</div>
+      <div class="card-title-block">
+        <div class="card-type">Hatchback-SUV</div>
+        <div class="card-name">Citroën C4</div>
+        <div class="card-spec">2023 (73) · 1.2 PureTech 130 C-Series · 27,419 mi · ~14–17k used</div>
+      </div>
+      <div class="card-badges">
+        <span class="badge badge-petrol">⛽ Petrol</span>
+        <span class="badge badge-warn">⚠ 3-Star NCAP</span>
+      </div>
+    </div>
+    <div class="card-stats">
+      <div class="stat"><div class="stat-label">Insurance</div><div class="stat-value ok">Group 20</div></div>
+      <div class="stat"><div class="stat-label">Road Tax</div><div class="stat-value good">£195/yr</div></div>
+      <div class="stat"><div class="stat-label">Per 100 Miles</div><div class="stat-value ok">£15.60</div></div>
+      <div class="stat"><div class="stat-label">Real MPG</div><div class="stat-value">~42 mpg</div></div>
+      <div class="stat"><div class="stat-label">Boot</div><div class="stat-value ok">380 L</div></div>
+      <div class="stat"><div class="stat-label">NCAP</div><div class="stat-value bad">★★★ (3 stars)</div></div>
+      <div class="stat"><div class="stat-label">Reliability</div><div class="stat-value ok">Good</div></div>
+      <div class="stat"><div class="stat-label">Warranty</div><div class="stat-value ok">3yr / 60k mi</div></div>
+    </div>
+    <div class="card-footer">
+      <div class="card-note">⚠ 3-star NCAP · Cheapest used price · Top Driver Power satisfaction</div>
+      <a class="view-link" href="https://www.autotrader.co.uk/car-search?make=Citroen&model=C4&year-from=2023" target="_blank">View Listings ↗</a>
+    </div>
+  </div>
+
+</div>
+
+<div class="summary-box">
+  <div class="summary-inner">
+    <div class="summary-title">💡 Quick Picks for a Family of 2+2</div>
+    <div class="summary-grid">
+      <div class="summary-item"><div class="summary-item-label">Most Reliable</div><div class="summary-item-value">Kia / Toyota / Mazda</div><div class="summary-item-note">Kia 7yr, Toyota up to 10yr, Mazda 6yr</div></div>
+      <div class="summary-item"><div class="summary-item-label">Best EV Running Costs</div><div class="summary-item-value" style="color:var(--ev)">Frontera / MG S5 EV</div><div class="summary-item-note">~£7/100mi charging at home</div></div>
+      <div class="summary-item"><div class="summary-item-label">Biggest Boot</div><div class="summary-item-value">Citroën C5 Aircross</div><div class="summary-item-note">651L — most comfortable ride too</div></div>
+      <div class="summary-item"><div class="summary-item-label">Best MPG (non-EV)</div><div class="summary-item-value">Toyota Yaris Cross</div><div class="summary-item-note">~60mpg real world · Group 11 insurance</div></div>
+      <div class="summary-item"><div class="summary-item-label">Best Value Used</div><div class="summary-item-value">Dacia Duster / Hyundai Tucson</div><div class="summary-item-note">~£13–18k for strong used examples</div></div>
+      <div class="summary-item"><div class="summary-item-label">Sweet Spot</div><div class="summary-item-value">Hyundai Tucson / Kia XCeed</div><div class="summary-item-note">Reliability + space + sensible insurance</div></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ==================== TAB 2: RECOMMENDED TRIMS ==================== -->
+<div class="tab-panel" id="tab-recommended">
+
+<div class="skip-notice">
+  <div class="cards" style="padding-bottom:0.5rem">
+    <div class="skip-box">
+      <strong>Excluded from recommendations:</strong> OMODA 5 (high insurance, poor MPG), Vauxhall Grandland 1.2 Turbo (engine recall, reliability concerns), Honda HR-V (insurance group 30–33 too high). All other 25 cars included below, sorted by the same priority order.
+    </div>
+  </div>
+</div>
+
+<div class="cards">
+
+  <!-- R01 Kia ProCeed -->
+  <div class="rec-card">
+    <div class="rec-header">
+      <div class="rec-rank">01</div>
+      <div class="rec-title-block">
+        <div class="rec-type">Shooting Brake · Kia</div>
+        <div class="rec-name">ProCeed</div>
+        <div class="rec-sub">Group 13 · 7yr warranty · ~£13.70/100mi</div>
+      </div>
+      <span class="badge badge-petrol">⛽ Petrol</span>
+    </div>
+    <div class="rec-options">
+      <div class="rec-option">
+        <div class="rec-option-label"><span class="label-value">★ BEST VALUE</span></div>
+        <div class="rec-trim-name">GT-Line · Manual</div>
+        <div class="rec-engine">1.5T GDi ISG · 158hp</div>
+        <ul class="rec-bullets">
+          <li>18" alloys, heated seats, faux leather</li>
+          <li>Heated steering wheel, privacy glass</li>
+          <li>10.25" sat-nav touchscreen</li>
+          <li>Group 13 insurance</li>
+        </ul>
+        <div class="rec-price">~£21–24k used (24 plate)</div>
+        <a class="rec-link" href="https://www.autotrader.co.uk/car-search?make=Kia&model=ProCeed&year-from=2023" target="_blank">Browse on Autotrader ↗</a>
+      </div>
+      <div class="rec-option">
+        <div class="rec-option-label"><span class="label-allround">◈ BEST ALL-ROUND</span></div>
+        <div class="rec-trim-name">GT-Line S · DCT Auto</div>
+        <div class="rec-engine">1.5T GDi · 158hp · 7-speed DCT</div>
+        <ul class="rec-bullets">
+          <li>Panoramic sunroof, JBL audio</li>
+          <li>Digital cluster, wireless charging</li>
+          <li>Blind spot warning, all safety kit</li>
+          <li>Auto gearbox — easier driving</li>
+        </ul>
+        <div class="rec-price">~£24–27k used (24 plate)</div>
+        <a class="rec-link" href="https://www.autotrader.co.uk/car-search?make=Kia&model=ProCeed&year-from=2023" target="_blank">Browse on Autotrader ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- R02 Kia XCeed -->
+  <div class="rec-card">
+    <div class="rec-header">
+      <div class="rec-rank">02</div>
+      <div class="rec-title-block">
+        <div class="rec-type">Compact Crossover · Kia</div>
+        <div class="rec-name">XCeed</div>
+        <div class="rec-sub">Group 18 · 7yr warranty · ~£14.90/100mi</div>
+      </div>
+      <span class="badge badge-petrol">⛽ Petrol</span>
+    </div>
+    <div class="rec-options">
+      <div class="rec-option">
+        <div class="rec-option-label"><span class="label-value">★ BEST VALUE</span></div>
+        <div class="rec-trim-name">GT-Line · Manual or Auto</div>
+        <div class="rec-engine">1.5T GDi · 140hp</div>
+        <ul class="rec-bullets">
+          <li>18" alloys, sportier styling</li>
+          <li>Heated seats, faux leather trim</li>
+          <li>Heated steering wheel, privacy glass</li>
+          <li>~£1,500 over entry — well worth it</li>
+        </ul>
+        <div class="rec-price">~£17–20k used (73 plate)</div>
+        <a class="rec-link" href="https://www.autotrader.co.uk/car-search?make=Kia&model=XCeed&year-from=2022" target="_blank">Browse on Autotrader ↗</a>
+      </div>
+      <div class="rec-option">
+        <div class="rec-option-label"><span class="label-allround">◈ BEST ALL-ROUND</span></div>
+        <div class="rec-trim-name">GT-Line S · DCT Auto</div>
+        <div class="rec-engine">1.5T GDi · 140hp · 7-speed DCT</div>
+        <ul class="rec-bullets">
+          <li>Panoramic sunroof, JBL sound</li>
+          <li>Digital instrument cluster</li>
+          <li>Wireless charging, heated rear seats</li>
+          <li>Blind spot collision warning</li>
+        </ul>
+        <div class="rec-price">~£20–23k used (73 plate)</div>
+        <a class="rec-link" href="https://www.autotrader.co.uk/car-search?make=Kia&model=XCeed&year-from=2022" target="_blank">Browse on Autotrader ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- R03 Kia Sportage -->
+  <div class="rec-card">
+    <div class="rec-header">
+      <div class="rec-rank">03</div>
+      <div class="rec-title-block">
+        <div class="rec-type">Compact SUV · Kia</div>
+        <div class="rec-name">Sportage</div>
+        <div class="rec-sub">Group 17–20 · 7yr warranty · ~£16.50/100mi</div>
+      </div>
+      <span class="badge badge-mild">⚡ Mild Hybrid</span>
+    </div>
+    <div class="rec-options">
+      <div class="rec-option">
+        <div class="rec-option-label"><span class="label-value">★ BEST VALUE</span></div>
+        <div class="rec-trim-name">2 · 1.6T Mild Hybrid Manual</div>
+        <div class="rec-engine">1.6T GDi MHEV · 150hp</div>
+        <ul class="rec-bullets">
+          <li>10.25" touchscreen, LED lights</li>
+          <li>Reversing camera, cruise control</li>
+          <li>Lowest insurance of the range</li>
+          <li>Good standard kit throughout</li>
+        </ul>
+        <div class="rec-price">~£23–26k used</div>
+        <a class="rec-link" href="https://www.autotrader.co.uk/car-search?make=Kia&model=Sportage&year-from=2022" target="_blank">Browse on Autotrader ↗</a>
+      </div>
+      <div class="rec-option">
+        <div class="rec-option-label"><span class="label-allround">◈ BEST ALL-ROUND</span></div>
+        <div class="rec-trim-name">GT-Line · 1.6T Mild Hybrid DCT</div>
+        <div class="rec-engine">1.6T GDi MHEV · 150hp · 7-speed DCT</div>
+        <ul class="rec-bullets">
+          <li>19" alloys, sportier look</li>
+          <li>Heated seats, dual-zone climate</li>
+          <li>Wireless charging, panoramic roof</li>
+          <li>Blind spot warning standard</li>
+        </ul>
+        <div class="rec-price">~£26–29k used</div>
+        <a class="rec-link" href="https://www.autotrader.co.uk/car-search?make=Kia&model=Sportage&year-from=2022" target="_blank">Browse on Autotrader ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- R04 Mazda CX-5 -->
+  <div class="rec-card">
+    <div class="rec-header">
+      <div class="rec-rank">04</div>
+      <div class="rec-title-block">
+        <div class="rec-type">Compact SUV · Mazda</div>
+        <div class="rec-name">CX-5</div>
+        <div class="rec-sub">Group 17 · 6yr warranty · ~£17.30/100mi</div>
+      </div>
+      <span class="badge badge-mild">⚡ Mild Hybrid</span>
+    </div>
+    <div class="rec-options">
+      <div class="rec-option">
+        <div class="rec-option-label"><span class="label-value">★ BEST VALUE</span></div>
+        <div class="rec-trim-name">Centre-Line · 2.0 Manual</div>
+        <div class="rec-engine">2.0 e-Skyactiv G MHEV · 165hp</div>
+        <ul class="rec-bullets">
+          <li>Heated front seats, climate control</li>
+          <li>Keyless entry, front & rear sensors</li>
+          <li>Wireless phone charging</li>
+          <li>Best value sweet spot in range</li>
+        </ul>
+        <div class="rec-price">~£21–25k used (23 plate)</div>
+        <a class="rec-link" href="https://www.autotrader.co.uk/car-search?make=Mazda&model=CX-5&year-from=2022" target="_blank">Browse on Autotrader ↗</a>
+      </div>
+      <div class="rec-option">
+        <div class="rec-option-label"><span class="label-allround">◈ BEST ALL-ROUND</span></div>
+        <div class="rec-trim-name">Homura · 2.5 Auto</div>
+        <div class="rec-engine">2.5 e-Skyactiv G MHEV · 194hp</div>
+        <ul class="rec-bullets">
+          <li>Most powerful naturally aspirated engine</li>
+          <li>Red stitching, sport suspension</li>
+          <li>Bose sound, heated rear seats</li>
+          <li>Head-up display, 360° camera</li>
+        </ul>
+        <div class="rec-price">~£25–29k used</div>
+        <a class="rec-link" href="https://www.autotrader.co.uk/car-search?make=Mazda&model=CX-5&year-from=2022" target="_blank">Browse on Autotrader ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- R05 Mazda CX-30 -->
+  <div class="rec-card">
+    <div class="rec-header">
+      <div class="rec-rank">05</div>
+      <div class="rec-title-block">
+        <div class="rec-type">Compact Crossover · Mazda</div>
+        <div class="rec-name">CX-30</div>
+        <div class="rec-sub">Group 15–16 · 3yr warranty · ~£15.60/100mi</div>
+      </div>
+      <span class="badge badge-mild">⚡ Mild Hybrid</span>
+    </div>
+    <div class="rec-options">
+      <div class="rec-option">
+        <div class="rec-option-label"><span class="label-value">★ BEST VALUE</span></div>
+        <div class="rec-trim-name">Centre-Line · 2.0 Manual</div>
+        <div class="rec-engine">2.0 e-Skyactiv G MHEV · 122hp</div>
+        <ul class="rec-bullets">
+          <li>Heated front seats, climate control</li>
+          <li>Rain-sensing wipers, keyless entry</li>
+          <li>Front & rear parking sensors</li>
+          <li>Wireless charging, Sport mode</li>
+        </ul>
+        <div class="rec-price">~£18–21k used (24 plate)</div>
+        <a class="rec-link" href="https://www.autotrader.co.uk/car-search?make=Mazda&model=CX-30&year-from=2023" target="_blank">Browse on Autotrader ↗</a>
+      </div>
+      <div class="rec-option">
+        <div class="rec-option-label"><span class="label-allround">◈ BEST ALL-ROUND</span></div>
+        <div class="rec-trim-name">Homura · 2.0 Auto</div>
+        <div class="rec-engine">2.0 e-Skyactiv G MHEV · 122hp · Auto</div>
+        <ul class="rec-bullets">
+          <li>Sport styling, unique red interior trim</li>
+          <li>Bose premium sound system</li>
+          <li>Head-up display, 360° view monitor</li>
+          <li>Ventilated front seats</li>
+        </ul>
+        <div class="rec-price">~£21–24k used</div>
+        <a class="rec-link" href="https://www.autotrader.co.uk/car-search?make=Mazda&model=CX-30&year-from=2023" target="_blank">Browse on Autotrader ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- R06 Skoda Karoq -->
+  <div class="rec-card">
+    <div class="rec-header">
+      <div class="rec-rank">06</div>
+      <div class="rec-title-block">
+        <div class="rec-type">Compact SUV · Škoda</div>
+        <div class="rec-name">Karoq</div>
+        <div class="rec-sub">Group 15 · 3yr warranty · ~£14.80/100mi · Diesel</div>
+      </div>
+      <span class="badge badge-diesel">🛢️ Diesel</span>
+    </div>
+    <div class="rec-options">
+      <div class="rec-option">
+        <div class="rec-option-label"><span class="label-value">★ BEST VALUE</span></div>
+        <div class="rec-trim-name">SE · 1.5 TSI Petrol Manual</div>
+        <div class="rec-engine">1.5 TSI · 150hp · If lower mileage</div>
+        <ul class="rec-bullets">
+          <li>Good all-round standard spec</li>
+          <li>Cheaper than TDI variants to buy</li>
+          <li>Group 15–17 insurance</li>
+          <li>Better for lower annual mileage</li>
+        </ul>
+        <div class="rec-price">~£17–21k used</div>
+        <a class="rec-link" href="https://www.autotrader.co.uk/car-search?make=Skoda&model=Karoq&year-from=2022" target="_blank">Browse on Autotrader ↗</a>
+      </div>
+      <div class="rec-option">
+        <div class="rec-option-label"><span class="label-allround">◈ BEST ALL-ROUND</span></div>
+        <div class="rec-trim-name">SE Drive · 2.0 TDI DSG</div>
+        <div class="rec-engine">2.0 TDI · 150hp · 7-speed DSG</div>
+        <ul class="rec-bullets">
+          <li>Best real-world economy (~46mpg)</li>
+          <li>Excellent for higher mileage drivers</li>
+          <li>Spacious Variable Boot System</li>
+          <li>VW Group refinement throughout</li>
+        </ul>
+        <div class="rec-price">~£20–24k used</div>
+        <a class="rec-link" href="https://www.autotrader.co.uk/car-search?make=Skoda&model=Karoq&year-from=2022" target="_blank">Browse on Autotrader ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- R07 SEAT Ateca -->
+  <div class="rec-card">
+    <div class="rec-header">
+      <div class="rec-rank">07</div>
+      <div class="rec-title-block">
+        <div class="rec-type">Compact SUV · SEAT</div>
+        <div class="rec-name">Ateca</div>
+        <div class="rec-sub">Group 18 · 3yr warranty · ~£16.50/100mi</div>
+      </div>
+      <span class="badge badge-petrol">⛽ Petrol</span>
+    </div>
+    <div class="rec-options">
+      <div class="rec-option">
+        <div class="rec-option-label"><span class="label-value">★ BEST VALUE</span></div>
+        <div class="rec-trim-name">SE · 1.5 TSI EVO Manual</div>
+        <div class="rec-engine">1.5 TSI EVO · 150hp</div>
+        <ul class="rec-bullets">
+          <li>Full LED lights, 10" touchscreen</li>
+          <li>Wireless CarPlay & Android Auto</li>
+          <li>Rear parking sensors & camera</li>
+          <li>Good standard equipment level</li>
+        </ul>
+        <div class="rec-price">~£17–21k used (73 plate)</div>
+        <a class="rec-link" href="https://www.autotrader.co.uk/car-search?make=SEAT&model=Ateca&year-from=2022" target="_blank">Browse on Autotrader ↗</a>
+      </div>
+      <div class="rec-option">
+        <div class="rec-option-label"><span class="label-allround">◈ BEST ALL-ROUND</span></div>
+        <div class="rec-trim-name">Xperience · 1.5 TSI EVO DSG</div>
+        <div class="rec-engine">1.5 TSI EVO · 150hp · 7-speed DSG</div>
+        <ul class="rec-bullets">
+          <li>Heated seats, keyless entry</li>
+          <li>18" alloys, panoramic sunroof</li>
+          <li>Blind spot detection, rear traffic alert</li>
+          <li>Top spec, well-loaded at fair price</li>
+        </ul>
+        <div class="rec-price">~£20–24k used</div>
+        <a class="rec-link" href="https://www.autotrader.co.uk/car-search?make=SEAT&model=Ateca&year-from=2022" target="_blank">Browse on Autotrader ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- R08 Nissan Qashqai -->
+  <div class="rec-card">
+    <div class="rec-header">
+      <div class="rec-rank">08</div>
+      <div class="rec-title-block">
+        <div class="rec-type">Compact SUV · Nissan</div>
+        <div class="rec-name">Qashqai</div>
+        <div class="rec-sub">Group 19 · 3yr warranty · ~£15.70/100mi</div>
+      </div>
+      <span class="badge badge-mild">⚡ Mild Hybrid</span>
+    </div>
+    <div class="rec-options">
+      <div class="rec-option">
+        <div class="rec-option-label"><span class="label-value">★ BEST VALUE</span></div>
+        <div class="rec-trim-name">N-Connecta · 1.3 DIG-T 140 Manual</div>
+        <div class="rec-engine">1.3T Mild Hybrid · 140hp</div>
+        <ul class="rec-bullets">
+          <li>Google Maps built-in (key upgrade)</li>
+          <li>18" alloys, wireless CarPlay</li>
+          <li>360° around-view camera</li>
+          <li>Big step up from Acenta Premium</li>
+        </ul>
+        <div class="rec-price">~£21–24k used (24 plate)</div>
+        <a class="rec-link" href="https://www.autotrader.co.uk/car-search?make=Nissan&model=Qashqai&year-from=2023" target="_blank">Browse on Autotrader ↗</a>
+      </div>
+      <div class="rec-option">
+        <div class="rec-option-label"><span class="label-allround">◈ BEST ALL-ROUND</span></div>
+        <div class="rec-trim-name">Tekna · 1.3 DIG-T 158 Auto</div>
+        <div class="rec-engine">1.3T Mild Hybrid · 158hp · Xtronic Auto</div>
+        <ul class="rec-bullets">
+          <li>Head-up display, heated windscreen</li>
+          <li>Heated leather seats, powered tailgate</li>
+          <li>ProPilot semi-autonomous driving</li>
+          <li>Stay under £40k to avoid luxury VED</li>
+        </ul>
+        <div class="rec-price">~£25–29k used</div>
+        <a class="rec-link" href="https://www.autotrader.co.uk/car-search?make=Nissan&model=Qashqai&year-from=2023" target="_blank">Browse on Autotrader ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- R09 Peugeot 308 -->
+  <div class="rec-card">
+    <div class="rec-header">
+      <div class="rec-rank">09</div>
+      <div class="rec-title-block">
+        <div class="rec-type">Family Hatchback · Peugeot</div>
+        <div class="rec-name">308</div>
+        <div class="rec-sub">Group 19 · 3yr warranty · ~£14.60/100mi</div>
+      </div>
+      <span class="badge badge-petrol">⛽ Petrol</span>
+    </div>
+    <div class="rec-options">
+      <div class="rec-option">
+        <div class="rec-option-label"><span class="label-value">★ BEST VALUE</span></div>
+        <div class="rec-trim-name">Active Premium · 1.2 PureTech 130 Auto</div>
+        <div class="rec-engine">1.2 PureTech 130 · EAT8 Auto</div>
+        <ul class="rec-bullets">
+          <li>10" touchscreen, wireless CarPlay</li>
+          <li>Rear parking camera, cruise control</li>
+          <li>LED lights throughout</li>
+          <li>Entry point for the smooth EAT8 auto</li>
+        </ul>
+        <div class="rec-price">~£17–20k used (24 plate)</div>
+        <a class="rec-link" href="https://www.autotrader.co.uk/car-search?make=Peugeot&model=308&year-from=2023" target="_blank">Browse on Autotrader ↗</a>
+      </div>
+      <div class="rec-option">
+        <div class="rec-option-label"><span class="label-allround">◈ BEST ALL-ROUND</span></div>
+        <div class="rec-trim-name">Allure · 1.2 PureTech 130 EAT8</div>
+        <div class="rec-engine">1.2 PureTech 130 · EAT8 Auto</div>
+        <ul class="rec-bullets">
+          <li>Heated front seats, climate control</li>
+          <li>Keyless entry, larger 10" i-Cockpit</li>
+          <li>Park assist, blind spot monitoring</li>
+          <li>Great premium feel for the price</li>
+        </ul>
+        <div class="rec-price">~£19–22k used</div>
+        <a class="rec-link" href="https://www.autotrader.co.uk/car-search?make=Peugeot&model=308&year-from=2023" target="_blank">Browse on Autotrader ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- R10 Ford Focus Active X -->
+  <div class="rec-card">
+    <div class="rec-header">
+      <div class="rec-rank">10</div>
+      <div class="rec-title-block">
+        <div class="rec-type">Raised Hatchback · Ford</div>
+        <div class="rec-name">Focus Active X</div>
+        <div class="rec-sub">Group 17 · 3yr warranty · ~£15.10/100mi · Discontinued</div>
+      </div>
+      <span class="badge badge-mild">⚡ Mild Hybrid</span>
+    </div>
+    <div class="rec-options">
+      <div class="rec-option">
+        <div class="rec-option-label"><span class="label-value">★ BEST VALUE</span></div>
+        <div class="rec-trim-name">Active · 1.0 EcoBoost mHEV 125</div>
+        <div class="rec-engine">1.0 EcoBoost mHEV · 125hp · Manual</div>
+        <ul class="rec-bullets">
+          <li>SUV-style cladding and raised ride</li>
+          <li>SYNC 4 infotainment, wireless CarPlay</li>
+          <li>B&O sound system on some specs</li>
+          <li>Lower insurance than the 155hp</li>
+        </ul>
+        <div class="rec-price">~£18–21k used (73/24 plate)</div>
+        <a class="rec-link" href="https://www.autotrader.co.uk/car-search?make=Ford&model=Focus&year-from=2022" target="_blank">Browse on Autotrader ↗</a>
+      </div>
+      <div class="rec-option">
+        <div class="rec-option-label"><span class="label-allround">◈ BEST ALL-ROUND</span></div>
+        <div class="rec-trim-name">Active X · 1.0 EcoBoost mHEV 155 Auto</div>
+        <div class="rec-engine">1.0 EcoBoost mHEV · 155hp · 7-speed Auto</div>
+        <ul class="rec-bullets">
+          <li>Top spec with all kit included</li>
+          <li>Panoramic roof, heated seats</li>
+          <li>Matrix LED headlights</li>
+          <li>Most complete Focus you can buy used</li>
+        </ul>
+        <div class="rec-price">~£20–23k used</div>
+        <a class="rec-link" href="https://www.autotrader.co.uk/car-search?make=Ford&model=Focus&year-from=2022" target="_blank">Browse on Autotrader ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- R11 Vauxhall Frontera EV -->
+  <div class="rec-card">
+    <div class="rec-header">
+      <div class="rec-rank">11</div>
+      <div class="rec-title-block">
+        <div class="rec-type">Compact SUV · Electric · Vauxhall</div>
+        <div class="rec-name">Frontera Electric</div>
+        <div class="rec-sub">Group 14–15 · 3yr warranty · ~£7.05/100mi at home</div>
+      </div>
+      <span class="badge badge-ev">🔋 Full EV</span>
+    </div>
+    <div class="rec-options">
+      <div class="rec-option">
+        <div class="rec-option-label"><span class="label-value">★ BEST VALUE</span></div>
+        <div class="rec-trim-name">Design · 44kWh Standard Range</div>
+        <div class="rec-engine">44kWh · ~188mi range · 113hp</div>
+        <ul class="rec-bullets">
+          <li>Lowest entry price of any EV here</li>
+          <li>Group 15 insurance — exceptional for EV</li>
+          <li>Good standard kit for the money</li>
+          <li>Ideal if most driving is short trips</li>
+        </ul>
+        <div class="rec-price">~£22,495 new</div>
+        <a class="rec-link" href="https://www.autotrader.co.uk/car-search?make=Vauxhall&model=Frontera" target="_blank">Browse on Autotrader ↗</a>
+      </div>
+      <div class="rec-option">
+        <div class="rec-option-label"><span class="label-allround">◈ BEST ALL-ROUND</span></div>
+        <div class="rec-trim-name">GS · 54kWh Extended Range</div>
+        <div class="rec-engine">54kWh · ~253mi range · 113hp</div>
+        <ul class="rec-bullets">
+          <li>65 extra miles of real-world range</li>
+          <li>Wireless charging, larger screen</li>
+          <li>More confidence for longer journeys</li>
+          <li>Still low group 14 insurance</li>
+        </ul>
+        <div class="rec-price">~£25,995 new</div>
+        <a class="rec-link" href="https://www.autotrader.co.uk/car-search?make=Vauxhall&model=Frontera" target="_blank">Browse on Autotrader ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- R12 Renault Arkana -->
+  <div class="rec-card">
+    <div class="rec-header">
+      <div class="rec-rank">12</div>
+      <div class="rec-title-block">
+        <div class="rec-type">Coupe SUV · Renault</div>
+        <div class="rec-name">Arkana</div>
+        <div class="rec-sub">Group 16 · 3yr warranty · ~£14.80/100mi · Lower VED</div>
+      </div>
+      <span class="badge badge-full">⚡ Full Hybrid</span>
+    </div>
+    <div class="rec-options">
+      <div class="rec-option">
+        <div class="rec-option-label"><span class="label-value">★ BEST VALUE</span></div>
+        <div class="rec-trim-name">Equilibre · 1.6 E-Tech FHEV 145</div>
+        <div class="rec-engine">1.6 E-Tech Full Hybrid · 145hp</div>
+        <ul class="rec-bullets">
+          <li>Full hybrid — self-charging, no plug</li>
+          <li>Good standard kit level</li>
+          <li>Lower road tax than most rivals</li>
+          <li>Excellent real-world economy</li>
+        </ul>
+        <div class="rec-price">~£17–20k used (24 plate)</div>
+        <a class="rec-link" href="https://www.autotrader.co.uk/car-search?make=Renault&model=Arkana&year-from=2023" target="_blank">Browse on Autotrader ↗</a>
+      </div>
+      <div class="rec-option">
+        <div class="rec-option-label"><span class="label-allround">◈ BEST ALL-ROUND</span></div>
+        <div class="rec-trim-name">Techno · 1.6 E-Tech FHEV 145</div>
+        <div class="rec-engine">1.6 E-Tech Full Hybrid · 145hp</div>
+        <ul class="rec-bullets">
+          <li>Heated seats, wireless charging</li>
+          <li>Blind spot warning, 9.3" screen</li>
+          <li>Bose sound system option</li>
+          <li>Best-equipped without overspending</li>
+        </ul>
+        <div class="rec-price">~£19–23k used</div>
+        <a class="rec-link" href="https://www.autotrader.co.uk/car-search?make=Renault&model=Arkana&year-from=2023" target="_blank">Browse on Autotrader ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- R13 Dacia Jogger -->
+  <div class="rec-card">
+    <div class="rec-header">
+      <div class="rec-rank">13</div>
+      <div class="rec-title-block">
+        <div class="rec-type">MPV · 7 Seats · Dacia</div>
+        <div class="rec-name">Jogger HEV</div>
+        <div class="rec-sub">Group 16 · 3yr warranty · ~£12.60/100mi · ⚠ 1-star NCAP</div>
+      </div>
+      <span class="badge badge-full">⚡ Full Hybrid</span>
+    </div>
+    <div class="rec-options">
+      <div class="rec-option">
+        <div class="rec-option-label"><span class="label-value">★ BEST VALUE</span></div>
+        <div class="rec-trim-name">Expression · 1.6 HEV 140 Auto</div>
+        <div class="rec-engine">1.6 E-Tech Full Hybrid · 140hp</div>
+        <ul class="rec-bullets">
+          <li>7 seats as standard</li>
+          <li>Full hybrid — excellent real mpg</li>
+          <li>Huge boot even with 7 seats</li>
+          <li>Lowest cost to run in the list</li>
+        </ul>
+        <div class="rec-price">~£18–20k used</div>
+        <a class="rec-link" href="https://www.autotrader.co.uk/car-search?make=Dacia&model=Jogger&year-from=2024" target="_blank">Browse on Autotrader ↗</a>
+      </div>
+      <div class="rec-option">
+        <div class="rec-option-label"><span class="label-allround">◈ BEST ALL-ROUND</span></div>
+        <div class="rec-trim-name">Extreme · 1.6 HEV 140 Auto</div>
+        <div class="rec-engine">1.6 E-Tech Full Hybrid · 140hp</div>
+        <ul class="rec-bullets">
+          <li>Roof bars, 17" alloys, leather trim</li>
+          <li>Wireless charging, heated seats</li>
+          <li>Best-specced Jogger available</li>
+          <li>Still under £22k used</li>
+        </ul>
+        <div class="rec-price">~£20–22k used</div>
+        <a class="rec-link" href="https://www.autotrader.co.uk/car-search?make=Dacia&model=Jogger&year-from=2024" target="_blank">Browse on Autotrader ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- R14 Peugeot 3008 -->
+  <div class="rec-card">
+    <div class="rec-header">
+      <div class="rec-rank">14</div>
+      <div class="rec-title-block">
+        <div class="rec-type">Compact SUV · Peugeot</div>
+        <div class="rec-name">3008</div>
+        <div class="rec-sub">Group 21–22 · 3yr warranty · ~£15.60/100mi</div>
+      </div>
+      <span class="badge badge-mild">⚡ 48V Mild Hybrid</span>
+    </div>
+    <div class="rec-options">
+      <div class="rec-option">
+        <div class="rec-option-label"><span class="label-value">★ BEST VALUE</span></div>
+        <div class="rec-trim-name">Allure · 1.2 Hybrid 136 e-DSC6</div>
+        <div class="rec-engine">1.2 PureTech Hybrid 136 · e-DSC6 Auto</div>
+        <ul class="rec-bullets">
+          <li>10" i-Cockpit touchscreen</li>
+          <li>Heated seats, climate control</li>
+          <li>Keyless entry, rear camera</li>
+          <li>Good spec without overpaying</li>
+        </ul>
+        <div class="rec-price">~£19–23k used</div>
+        <a class="rec-link" href="https://www.autotrader.co.uk/car-search?make=Peugeot&model=3008&year-from=2022" target="_blank">Browse on Autotrader ↗</a>
+      </div>
+      <div class="rec-option">
+        <div class="rec-option-label"><span class="label-allround">◈ BEST ALL-ROUND</span></div>
+        <div class="rec-trim-name">GT · 1.2 Hybrid 136 e-DSC6</div>
+        <div class="rec-engine">1.2 PureTech Hybrid 136 · e-DSC6 Auto</div>
+        <ul class="rec-bullets">
+          <li>Full LED IntelliLux headlights</li>
+          <li>Massaging front seats, Focal audio</li>
+          <li>Panoramic sunroof, heads-up display</li>
+          <li>Top of the outgoing gen — loaded</li>
+        </ul>
+        <div class="rec-price">~£22–26k used</div>
+        <a class="rec-link" href="https://www.autotrader.co.uk/car-search?make=Peugeot&model=3008&year-from=2022" target="_blank">Browse on Autotrader ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- R15 Citroën C5 Aircross -->
+  <div class="rec-card">
+    <div class="rec-header">
+      <div class="rec-rank">15</div>
+      <div class="rec-title-block">
+        <div class="rec-type">Mid-Size SUV · Citroën</div>
+        <div class="rec-name">C5 Aircross</div>
+        <div class="rec-sub">Group 22–24 · 3yr warranty · ~£15.60/100mi · Biggest boot</div>
+      </div>
+      <span class="badge badge-mild">⚡ 48V Mild Hybrid</span>
+    </div>
+    <div class="rec-options">
+      <div class="rec-option">
+        <div class="rec-option-label"><span class="label-value">★ BEST VALUE</span></div>
+        <div class="rec-trim-name">Plus · 1.2 Hybrid 136 e-DSC6</div>
+        <div class="rec-engine">1.2 PureTech Hybrid 136 · e-DSC6 Auto</div>
+        <ul class="rec-bullets">
+          <li>651L boot — biggest in this list</li>
+          <li>Pillow suspension — softest ride here</li>
+          <li>Heated seats, wireless charging</li>
+          <li>Good entry into C5 Aircross range</li>
+        </ul>
+        <div class="rec-price">~£18–22k used</div>
+        <a class="rec-link" href="https://www.autotrader.co.uk/car-search?make=Citroen&model=C5+Aircross&year-from=2022" target="_blank">Browse on Autotrader ↗</a>
+      </div>
+      <div class="rec-option">
+        <div class="rec-option-label"><span class="label-allround">◈ BEST ALL-ROUND</span></div>
+        <div class="rec-trim-name">E-series · 1.2 Hybrid 136 e-DSC6</div>
+        <div class="rec-engine">1.2 PureTech Hybrid 136 · e-DSC6 Auto</div>
+        <ul class="rec-bullets">
+          <li>Top spec — fully loaded</li>
+          <li>360° camera, panoramic glass roof</li>
+          <li>Focal audio, IntelliLux LED lights</li>
+          <li>Sliding rear bench — unique feature</li>
+        </ul>
+        <div class="rec-price">~£21–25k used</div>
+        <a class="rec-link" href="https://www.autotrader.co.uk/car-search?make=Citroen&model=C5+Aircross&year-from=2022" target="_blank">Browse on Autotrader ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- R16 Vauxhall Grandland PHEV -->
+  <div class="rec-card">
+    <div class="rec-header">
+      <div class="rec-rank">16</div>
+      <div class="rec-title-block">
+        <div class="rec-type">Mid-Size SUV · Plug-in Hybrid · Vauxhall</div>
+        <div class="rec-name">Grandland PHEV</div>
+        <div class="rec-sub">Group 28–30 · 3yr warranty · ~£5/100mi if charging daily</div>
+      </div>
+      <span class="badge badge-phev">🔌 Plug-in Hybrid</span>
+    </div>
+    <div class="rec-options">
+      <div class="rec-option">
+        <div class="rec-option-label"><span class="label-value">★ BEST VALUE</span></div>
+        <div class="rec-trim-name">GS · 1.6 Plug-in Hybrid Auto</div>
+        <div class="rec-engine">1.6T PHEV · 225hp · 8-speed Auto</div>
+        <ul class="rec-bullets">
+          <li>23–28mi real EV range daily</li>
+          <li>Good mid-spec with key features</li>
+          <li>Lower price than Ultimate</li>
+          <li>Hybrid components covered 8 years</li>
+        </ul>
+        <div class="rec-price">~£20–24k used (74 plate)</div>
+        <a class="rec-link" href="https://www.autotrader.co.uk/car-search?make=Vauxhall&model=Grandland&year-from=2023" target="_blank">Browse on Autotrader ↗</a>
+      </div>
+      <div class="rec-option">
+        <div class="rec-option-label"><span class="label-allround">◈ BEST ALL-ROUND</span></div>
+        <div class="rec-trim-name">Ultimate · 1.6 Plug-in Hybrid Auto</div>
+        <div class="rec-engine">1.6T PHEV · 225hp · 8-speed Auto</div>
+        <ul class="rec-bullets">
+          <li>Panoramic roof, 360° camera system</li>
+          <li>Focal hi-fi, heated sports seats</li>
+          <li>Head-up display, powered bootlid</li>
+          <li>Fully loaded — nothing left to add</li>
+        </ul>
+        <div class="rec-price">~£23–27k used</div>
+        <a class="rec-link" href="https://www.autotrader.co.uk/car-search?make=Vauxhall&model=Grandland&year-from=2023" target="_blank">Browse on Autotrader ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- R17 Jeep Avenger -->
+  <div class="rec-card">
+    <div class="rec-header">
+      <div class="rec-rank">17</div>
+      <div class="rec-title-block">
+        <div class="rec-type">Compact SUV · Jeep</div>
+        <div class="rec-name">Avenger</div>
+        <div class="rec-sub">Group 24 · 3yr warranty · ~£11.40/100mi · Lowest road tax</div>
+      </div>
+      <span class="badge badge-mild">⚡ Mild Hybrid</span>
+    </div>
+    <div class="rec-options">
+      <div class="rec-option">
+        <div class="rec-option-label"><span class="label-value">★ BEST VALUE</span></div>
+        <div class="rec-trim-name">Longitude · 1.2 e-Hybrid DCT</div>
+        <div class="rec-engine">1.2T e-Hybrid · 100hp · DCT Auto</div>
+        <ul class="rec-bullets">
+          <li>Best real-world MPG of any petrol here</li>
+          <li>Good standard spec throughout</li>
+          <li>Lowest VED of any petrol — £145/yr</li>
+          <li>5-star NCAP safety rating</li>
+        </ul>
+        <div class="rec-price">~£22–25k used</div>
+        <a class="rec-link" href="https://www.autotrader.co.uk/car-search?make=Jeep&model=Avenger&year-from=2023" target="_blank">Browse on Autotrader ↗</a>
+      </div>
+      <div class="rec-option">
+        <div class="rec-option-label"><span class="label-allround">◈ BEST ALL-ROUND</span></div>
+        <div class="rec-trim-name">Summit · 1.2 e-Hybrid DCT</div>
+        <div class="rec-engine">1.2T e-Hybrid · 100hp · DCT Auto</div>
+        <ul class="rec-bullets">
+          <li>Top spec — panoramic roof</li>
+          <li>Heated leather seats, wireless charging</li>
+          <li>360° camera, premium audio</li>
+          <li>Full kit but note the 321L boot</li>
+        </ul>
+        <div class="rec-price">~£25–29k new/used</div>
+        <a class="rec-link" href="https://www.autotrader.co.uk/car-search?make=Jeep&model=Avenger&year-from=2023" target="_blank">Browse on Autotrader ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- R18 MG S5 EV -->
+  <div class="rec-card">
+    <div class="rec-header">
+      <div class="rec-rank">18</div>
+      <div class="rec-title-block">
+        <div class="rec-type">Compact SUV · Electric · MG</div>
+        <div class="rec-name">S5 EV</div>
+        <div class="rec-sub">Group 29 · 7yr warranty · ~£6.85/100mi at home</div>
+      </div>
+      <span class="badge badge-ev">🔋 Full EV</span>
+    </div>
+    <div class="rec-options">
+      <div class="rec-option">
+        <div class="rec-option-label"><span class="label-value">★ BEST VALUE</span></div>
+        <div class="rec-trim-name">SE · Standard Range 49kWh</div>
+        <div class="rec-engine">49kWh · ~211mi range · 150hp</div>
+        <ul class="rec-bullets">
+          <li>Lowest entry price MG S5</li>
+          <li>Good standard kit throughout</li>
+          <li>150kW fast charging capability</li>
+          <li>7yr/80k warranty — best EV warranty</li>
+        </ul>
+        <div class="rec-price">~£28,495 new</div>
+        <a class="rec-link" href="https://www.autotrader.co.uk/car-search?make=MG&model=S5" target="_blank">Browse on Autotrader ↗</a>
+      </div>
+      <div class="rec-option">
+        <div class="rec-option-label"><span class="label-allround">◈ BEST ALL-ROUND</span></div>
+        <div class="rec-trim-name">SE · Long Range 64kWh</div>
+        <div class="rec-engine">64kWh · ~298mi range · 150hp</div>
+        <ul class="rec-bullets">
+          <li>~240mi real-world range</li>
+          <li>Much more confidence for longer trips</li>
+          <li>Same 7yr/80k warranty</li>
+          <li>~£2,500 more — worth it for range</li>
+        </ul>
+        <div class="rec-price">~£30,995 new</div>
+        <a class="rec-link" href="https://www.autotrader.co.uk/car-search?make=MG&model=S5" target="_blank">Browse on Autotrader ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- R19 MG HS -->
+  <div class="rec-card">
+    <div class="rec-header">
+      <div class="rec-rank">19</div>
+      <div class="rec-title-block">
+        <div class="rec-type">Large SUV · MG</div>
+        <div class="rec-name">HS</div>
+        <div class="rec-sub">Group 25 · 7yr warranty · ~£17.40/100mi</div>
+      </div>
+      <span class="badge badge-petrol">⛽ Petrol</span>
+    </div>
+    <div class="rec-options">
+      <div class="rec-option">
+        <div class="rec-option-label"><span class="label-value">★ BEST VALUE</span></div>
+        <div class="rec-trim-name">SE · 1.5T-GDI Manual</div>
+        <div class="rec-engine">1.5T GDI · 169hp · 6-speed Manual</div>
+        <ul class="rec-bullets">
+          <li>Avoids the jerky DCT gearbox</li>
+          <li>Good standard equipment level</li>
+          <li>7yr/80k warranty included</li>
+          <li>Largest petrol SUV in the list</li>
+        </ul>
+        <div class="rec-price">~£24–27k used</div>
+        <a class="rec-link" href="https://www.autotrader.co.uk/car-search?make=MG&model=HS&year-from=2024" target="_blank">Browse on Autotrader ↗</a>
+      </div>
+      <div class="rec-option">
+        <div class="rec-option-label"><span class="label-allround">◈ BEST ALL-ROUND</span></div>
+        <div class="rec-trim-name">Trophy · 1.5T-GDI Manual</div>
+        <div class="rec-engine">1.5T GDI · 169hp · 6-speed Manual</div>
+        <ul class="rec-bullets">
+          <li>Panoramic sunroof, leather seats</li>
+          <li>Heated & ventilated front seats</li>
+          <li>360° camera, Bose sound</li>
+          <li>Manual avoids DCT criticism</li>
+        </ul>
+        <div class="rec-price">~£27–30k used</div>
+        <a class="rec-link" href="https://www.autotrader.co.uk/car-search?make=MG&model=HS&year-from=2024" target="_blank">Browse on Autotrader ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- R20 Dacia Duster -->
+  <div class="rec-card">
+    <div class="rec-header">
+      <div class="rec-rank">20</div>
+      <div class="rec-title-block">
+        <div class="rec-type">Compact SUV · Dacia</div>
+        <div class="rec-name">Duster</div>
+        <div class="rec-sub">Group 13 · 3yr warranty · £7.80/100mi (LPG) · ⚠ 3-star NCAP</div>
+      </div>
+      <span class="badge badge-lpg">⛽ LPG Bi-Fuel</span>
+    </div>
+    <div class="rec-options">
+      <div class="rec-option">
+        <div class="rec-option-label"><span class="label-value">★ BEST VALUE</span></div>
+        <div class="rec-trim-name">Expression · 1.0 TCe Bi-Fuel</div>
+        <div class="rec-engine">1.0 TCe 100 · Petrol + LPG</div>
+        <ul class="rec-bullets">
+          <li>Good mid-spec with key features</li>
+          <li>767-mile combined range (both tanks)</li>
+          <li>Group 13 — lowest of any SUV here</li>
+          <li>Best budget option if LPG available</li>
+        </ul>
+        <div class="rec-price">~£12–15k used (73 plate)</div>
+        <a class="rec-link" href="https://www.autotrader.co.uk/car-search?make=Dacia&model=Duster&year-from=2022" target="_blank">Browse on Autotrader ↗</a>
+      </div>
+      <div class="rec-option">
+        <div class="rec-option-label"><span class="label-allround">◈ BEST ALL-ROUND</span></div>
+        <div class="rec-trim-name">Extreme · 1.0 TCe Bi-Fuel</div>
+        <div class="rec-engine">1.0 TCe 100 · Petrol + LPG</div>
+        <ul class="rec-bullets">
+          <li>Best spec available on gen 2</li>
+          <li>17" alloys, leather-effect seats</li>
+          <li>Wireless CarPlay, rear camera</li>
+          <li>Still remarkable value used</li>
+        </ul>
+        <div class="rec-price">~£14–17k used</div>
+        <a class="rec-link" href="https://www.autotrader.co.uk/car-search?make=Dacia&model=Duster&year-from=2022" target="_blank">Browse on Autotrader ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- R21 Hyundai Tucson -->
+  <div class="rec-card">
+    <div class="rec-header">
+      <div class="rec-rank">21</div>
+      <div class="rec-title-block">
+        <div class="rec-type">Compact SUV · Hyundai</div>
+        <div class="rec-name">Tucson</div>
+        <div class="rec-sub">Group 18–20 · 5yr unlimited warranty · ~£15.70/100mi</div>
+      </div>
+      <span class="badge badge-mild">⚡ Mild Hybrid</span>
+    </div>
+    <div class="rec-options">
+      <div class="rec-option">
+        <div class="rec-option-label"><span class="label-value">★ BEST VALUE</span></div>
+        <div class="rec-trim-name">Premium · 1.6T MHEV Manual</div>
+        <div class="rec-engine">1.6T Mild Hybrid · 150hp · 6-speed Manual</div>
+        <ul class="rec-bullets">
+          <li>620L boot — bigger than Sportage</li>
+          <li>Heated seats, dual-zone climate</li>
+          <li>10.25" touchscreen, wireless CarPlay</li>
+          <li>5yr unlimited mileage warranty</li>
+        </ul>
+        <div class="rec-price">~£17–20k used (2022/23)</div>
+        <a class="rec-link" href="https://www.autotrader.co.uk/car-search?make=Hyundai&model=Tucson&year-from=2021" target="_blank">Browse on Autotrader ↗</a>
+      </div>
+      <div class="rec-option">
+        <div class="rec-option-label"><span class="label-allround">◈ BEST ALL-ROUND</span></div>
+        <div class="rec-trim-name">Ultimate · 1.6T MHEV DCT</div>
+        <div class="rec-engine">1.6T Mild Hybrid · 150hp · 7-speed DCT Auto</div>
+        <ul class="rec-bullets">
+          <li>Leather seats, panoramic sunroof</li>
+          <li>Blind spot, heated rear seats</li>
+          <li>Head-up display, 360° camera</li>
+          <li>Avoid Hybrid — ins group 21+ higher</li>
+        </ul>
+        <div class="rec-price">~£20–24k used</div>
+        <a class="rec-link" href="https://www.autotrader.co.uk/car-search?make=Hyundai&model=Tucson&year-from=2021" target="_blank">Browse on Autotrader ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- R22 Toyota Yaris Cross -->
+  <div class="rec-card">
+    <div class="rec-header">
+      <div class="rec-rank">22</div>
+      <div class="rec-title-block">
+        <div class="rec-type">Subcompact SUV · Toyota</div>
+        <div class="rec-name">Yaris Cross</div>
+        <div class="rec-sub">Group 11–13 · Up to 10yr warranty · ~£10.40/100mi</div>
+      </div>
+      <span class="badge badge-full">⚡ Full Hybrid</span>
+    </div>
+    <div class="rec-options">
+      <div class="rec-option">
+        <div class="rec-option-label"><span class="label-value">★ BEST VALUE</span></div>
+        <div class="rec-trim-name">Icon · 1.5 Hybrid CVT</div>
+        <div class="rec-engine">1.5 Hybrid · 116hp · CVT Auto</div>
+        <ul class="rec-bullets">
+          <li>Lowest insurance of any car in list</li>
+          <li>~60mpg real world economy</li>
+          <li>LED headlights, dual climate control</li>
+          <li>Toyota Safety Sense standard</li>
+        </ul>
+        <div class="rec-price">~£16–18k used (2022/23)</div>
+        <a class="rec-link" href="https://www.autotrader.co.uk/car-search?make=Toyota&model=Yaris+Cross&year-from=2022" target="_blank">Browse on Autotrader ↗</a>
+      </div>
+      <div class="rec-option">
+        <div class="rec-option-label"><span class="label-allround">◈ BEST ALL-ROUND</span></div>
+        <div class="rec-trim-name">Design · 1.5 Hybrid CVT</div>
+        <div class="rec-engine">1.5 Hybrid · 116hp · CVT Auto</div>
+        <ul class="rec-bullets">
+          <li>Heated seats, wireless charging</li>
+          <li>Panoramic roof, privacy glass</li>
+          <li>Blind spot monitoring, rear camera</li>
+          <li>Best spec without overspending</li>
+        </ul>
+        <div class="rec-price">~£18–21k used</div>
+        <a class="rec-link" href="https://www.autotrader.co.uk/car-search?make=Toyota&model=Yaris+Cross&year-from=2022" target="_blank">Browse on Autotrader ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- R23 Toyota C-HR -->
+  <div class="rec-card">
+    <div class="rec-header">
+      <div class="rec-rank">23</div>
+      <div class="rec-title-block">
+        <div class="rec-type">Coupe SUV · Toyota</div>
+        <div class="rec-name">C-HR</div>
+        <div class="rec-sub">Group 14–17 · Up to 10yr warranty · ~£11/100mi</div>
+      </div>
+      <span class="badge badge-full">⚡ Full Hybrid</span>
+    </div>
+    <div class="rec-options">
+      <div class="rec-option">
+        <div class="rec-option-label"><span class="label-value">★ BEST VALUE</span></div>
+        <div class="rec-trim-name">Icon · 1.8 Hybrid CVT</div>
+        <div class="rec-engine">1.8 Hybrid · 122hp · CVT Auto</div>
+        <ul class="rec-bullets">
+          <li>Lowest entry price into C-HR</li>
+          <li>Toyota Safety Sense all standard</li>
+          <li>~56mpg real world economy</li>
+          <li>Dual climate, LED lights throughout</li>
+        </ul>
+        <div class="rec-price">~£16–19k used (2022/23)</div>
+        <a class="rec-link" href="https://www.autotrader.co.uk/car-search?make=Toyota&model=C-HR&year-from=2021" target="_blank">Browse on Autotrader ↗</a>
+      </div>
+      <div class="rec-option">
+        <div class="rec-option-label"><span class="label-allround">◈ BEST ALL-ROUND</span></div>
+        <div class="rec-trim-name">Design · 1.8 Hybrid CVT</div>
+        <div class="rec-engine">1.8 Hybrid · 122hp · CVT Auto</div>
+        <ul class="rec-bullets">
+          <li>Heated seats, JBL audio option</li>
+          <li>Wireless CarPlay, larger screen</li>
+          <li>Blind spot warning, rear cross traffic</li>
+          <li>Best balance of kit vs cost in range</li>
+        </ul>
+        <div class="rec-price">~£18–22k used</div>
+        <a class="rec-link" href="https://www.autotrader.co.uk/car-search?make=Toyota&model=C-HR&year-from=2021" target="_blank">Browse on Autotrader ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- R24 VW T-Roc -->
+  <div class="rec-card">
+    <div class="rec-header">
+      <div class="rec-rank">24</div>
+      <div class="rec-title-block">
+        <div class="rec-type">Compact SUV · Volkswagen</div>
+        <div class="rec-name">T-Roc</div>
+        <div class="rec-sub">Group 17–19 · 3yr warranty · ~£15.50/100mi</div>
+      </div>
+      <span class="badge badge-petrol">⛽ Petrol</span>
+    </div>
+    <div class="rec-options">
+      <div class="rec-option">
+        <div class="rec-option-label"><span class="label-value">★ BEST VALUE</span></div>
+        <div class="rec-trim-name">Life · 1.5 TSI EVO Manual</div>
+        <div class="rec-engine">1.5 TSI EVO · 150hp · 6-speed Manual</div>
+        <ul class="rec-bullets">
+          <li>8" touchscreen, digital instruments</li>
+          <li>Wireless CarPlay, rear sensors</li>
+          <li>LED headlights, alloy wheels</li>
+          <li>Good base spec — avoids overpaying</li>
+        </ul>
+        <div class="rec-price">~£18–21k used (2022/23)</div>
+        <a class="rec-link" href="https://www.autotrader.co.uk/car-search?make=Volkswagen&model=T-Roc&year-from=2022" target="_blank">Browse on Autotrader ↗</a>
+      </div>
+      <div class="rec-option">
+        <div class="rec-option-label"><span class="label-allround">◈ BEST ALL-ROUND</span></div>
+        <div class="rec-trim-name">Style · 1.5 TSI EVO DSG</div>
+        <div class="rec-engine">1.5 TSI EVO · 150hp · 7-speed DSG Auto</div>
+        <ul class="rec-bullets">
+          <li>18" alloys, keyless entry</li>
+          <li>Heated front seats, 3-zone climate</li>
+          <li>Massaging front seats available</li>
+          <li>Avoid R-Line — 19" wheels too harsh</li>
+        </ul>
+        <div class="rec-price">~£20–24k used</div>
+        <a class="rec-link" href="https://www.autotrader.co.uk/car-search?make=Volkswagen&model=T-Roc&year-from=2022" target="_blank">Browse on Autotrader ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- R25 Citroën C4 -->
+  <div class="rec-card">
+    <div class="rec-header">
+      <div class="rec-rank">25</div>
+      <div class="rec-title-block">
+        <div class="rec-type">Hatchback-SUV · Citroën</div>
+        <div class="rec-name">C4</div>
+        <div class="rec-sub">Group 20 · 3yr warranty · ~£15.60/100mi · ⚠ 3-star NCAP</div>
+      </div>
+      <span class="badge badge-petrol">⛽ Petrol</span>
+    </div>
+    <div class="rec-options">
+      <div class="rec-option">
+        <div class="rec-option-label"><span class="label-value">★ BEST VALUE</span></div>
+        <div class="rec-trim-name">Plus · 1.2 PureTech 130 Auto</div>
+        <div class="rec-engine">1.2 PureTech 130 · EAT8 Auto</div>
+        <ul class="rec-bullets">
+          <li>Cheapest sensible trim with auto box</li>
+          <li>Wireless CarPlay, rear camera</li>
+          <li>Advanced Comfort seats — class leading</li>
+          <li>Softest ride of any car in this list</li>
+        </ul>
+        <div class="rec-price">~£13–16k used (73 plate)</div>
+        <a class="rec-link" href="https://www.autotrader.co.uk/car-search?make=Citroen&model=C4&year-from=2022" target="_blank">Browse on Autotrader ↗</a>
+      </div>
+      <div class="rec-option">
+        <div class="rec-option-label"><span class="label-allround">◈ BEST ALL-ROUND</span></div>
+        <div class="rec-trim-name">Shine · 1.2 PureTech 130 Auto</div>
+        <div class="rec-engine">1.2 PureTech 130 · EAT8 Auto</div>
+        <ul class="rec-bullets">
+          <li>Heated seats, keyless entry</li>
+          <li>Blind spot warning, lane keep assist</li>
+          <li>Full LED lights, 10" touchscreen</li>
+          <li>Best spec at a reasonable price</li>
+        </ul>
+        <div class="rec-price">~£15–18k used</div>
+        <a class="rec-link" href="https://www.autotrader.co.uk/car-search?make=Citroen&model=C4&year-from=2022" target="_blank">Browse on Autotrader ↗</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div><!-- end tab-recommended -->
+
+<div class="footer">
+  Prices & specs based on research April 2026 · All used prices approximate · Verify current listings before purchase<br>
+  Running costs: petrol £1.45/L · diesel £1.50/L · home electricity 24p/kWh · LPG ~60p/L
+</div>
 
 <script>
-const reliabilityScore = {
-  "Excellent": 5,
-  "Very Good": 4,
-  "Good": 3,
-  "Average": 2,
-  "Unknown": 1
-};
-
-const cars = [
-  {name:"Kia Sportage", rel:"Excellent", ins:20, ved:190, cost:11.5, size:4515},
-  {name:"Mazda CX-5", rel:"Excellent", ins:21, ved:190, cost:12.0, size:4575},
-  {name:"Skoda Karoq", rel:"Very Good", ins:18, ved:190, cost:11.8, size:4384},
-  {name:"SEAT Ateca", rel:"Very Good", ins:19, ved:190, cost:11.9, size:4381},
-  {name:"Nissan Qashqai", rel:"Very Good", ins:20, ved:190, cost:12.2, size:4425},
-
-  {name:"Hyundai Tucson", rel:"Very Good", ins:19, ved:190, cost:12.3, size:4500},
-  {name:"Dacia Duster", rel:"Good", ins:13, ved:190, cost:7.8, size:4343},
-
-  {name:"Jeep Avenger", rel:"Average", ins:24, ved:180, cost:8.5, size:4084},
-  {name:"MG HS", rel:"Average", ins:25, ved:190, cost:17.4, size:4574},
-  {name:"Vauxhall Grandland 1.2", rel:"Average", ins:24, ved:190, cost:13.5, size:4477},
-
-  {name:"MG S5 EV", rel:"Unknown", ins:29, ved:0, cost:4.0, size:4476},
-  {name:"OMODA 5", rel:"Unknown", ins:32, ved:190, cost:18.0, size:4400}
-];
-
-// scoring function (STRICT priority weighting)
-function score(car){
-  return (
-    reliabilityScore[car.rel] * 1000 +   // dominant
-    (50 - car.ins) * 20 +                // strong
-    (200 - car.ved) * 2 +                // moderate
-    (20 - car.cost) * 10 +               // lower
-    car.size / 100                      // minor
-  );
+function switchTab(tabId, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + tabId).classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo({top: 0, behavior: 'smooth'});
 }
-
-// compute score
-cars.forEach(c => c.score = score(c));
-
-// sort properly
-cars.sort((a,b) => b.score - a.score);
-
-// render
-const tbody = document.querySelector("#carTable tbody");
-
-cars.forEach(car => {
-  const row = `
-    <tr>
-      <td>${car.name}</td>
-      <td>${car.rel}</td>
-      <td>${car.ins}</td>
-      <td>£${car.ved}</td>
-      <td>£${car.cost}</td>
-      <td>${car.size}</td>
-      <td>${car.score.toFixed(0)}</td>
-    </tr>
-  `;
-  tbody.innerHTML += row;
-});
 </script>
-
 </body>
 </html>
