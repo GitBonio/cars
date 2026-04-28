@@ -2244,7 +2244,9 @@ function switchTab(tabId, btn) {
 }
 </script>
 <script>
-// Convert reliability text to rank
+// ===== SORTING ENGINE (FULL REPLACEMENT) =====
+
+// Convert reliability text → score
 function getReliabilityScore(text) {
   if (!text) return 1;
   text = text.toLowerCase();
@@ -2255,33 +2257,36 @@ function getReliabilityScore(text) {
   return 1; // unknown
 }
 
-// Extract number from text like "Group 13" or "£195"
+// Extract numbers safely
 function extractNumber(text) {
   if (!text) return 999;
   const match = text.replace(/,/g,'').match(/[\d.]+/);
   return match ? parseFloat(match[0]) : 999;
 }
 
-// Build sortable data from a card
+// Read data from each card
 function parseCard(card) {
   const stats = card.querySelectorAll('.stat');
 
-  let reliability = 1, insurance = 999, ved = 999, cost = 999;
+  let reliability = 1;
+  let insurance = 999;
+  let ved = 999;
+  let cost = 999;
 
   stats.forEach(stat => {
-    const label = stat.querySelector('.stat-label')?.innerText || '';
+    const label = (stat.querySelector('.stat-label')?.innerText || '').toLowerCase();
     const value = stat.querySelector('.stat-value')?.innerText || '';
 
-    if (label.includes("Reliability")) reliability = getReliabilityScore(value);
-    if (label.includes("Insurance")) insurance = extractNumber(value);
-    if (label.includes("Road Tax")) ved = extractNumber(value);
-    if (label.includes("Per 100")) cost = extractNumber(value);
+    if (label.includes("reliability")) reliability = getReliabilityScore(value);
+    if (label.includes("insurance")) insurance = extractNumber(value);
+    if (label.includes("tax")) ved = extractNumber(value);
+    if (label.includes("100")) cost = extractNumber(value);
   });
 
   return { card, reliability, insurance, ved, cost };
 }
 
-// Sorting logic (STRICT priority)
+// STRICT priority sort (your exact rules)
 function compare(a, b) {
   if (b.reliability !== a.reliability) return b.reliability - a.reliability;
   if (a.insurance !== b.insurance) return a.insurance - b.insurance;
@@ -2290,32 +2295,49 @@ function compare(a, b) {
   return 0;
 }
 
-// Apply sorting to a container
-function sortCards(containerSelector, cardClass) {
-  const container = document.querySelector(containerSelector);
-  if (!container) return;
+// Apply sorting to both tabs
+function sortAllCards() {
 
-  const cards = Array.from(container.querySelectorAll(cardClass));
-  const parsed = cards.map(parseCard);
+  // --- SHORTLIST TAB ---
+  const shortlist = document.querySelector('#tab-shortlist');
+  if (shortlist) {
+    const cards = Array.from(shortlist.querySelectorAll('.card'));
+    const parsed = cards.map(parseCard);
 
-  parsed.sort(compare);
+    parsed.sort(compare);
 
-  parsed.forEach((item, index) => {
-    container.appendChild(item.card);
+    parsed.forEach((item, index) => {
+      shortlist.appendChild(item.card);
 
-    // update visible rank number
-    const rankEl = item.card.querySelector('.card-rank, .rec-rank');
-    if (rankEl) {
-      rankEl.innerText = String(index + 1).padStart(2, '0');
-    }
-  });
+      const rankEl = item.card.querySelector('.card-rank');
+      if (rankEl) {
+        rankEl.innerText = String(index + 1).padStart(2, '0');
+      }
+    });
+  }
+
+  // --- RECOMMENDED TAB ---
+  const recommended = document.querySelector('#tab-recommended');
+  if (recommended) {
+    const cards = Array.from(recommended.querySelectorAll('.rec-card'));
+    const parsed = cards.map(parseCard);
+
+    parsed.sort(compare);
+
+    parsed.forEach((item, index) => {
+      recommended.appendChild(item.card);
+
+      const rankEl = item.card.querySelector('.rec-rank');
+      if (rankEl) {
+        rankEl.innerText = String(index + 1).padStart(2, '0');
+      }
+    });
+  }
 }
 
-// Run after load
-window.addEventListener('DOMContentLoaded', () => {
-  sortCards('#tab-shortlist .cards', '.card');
-  sortCards('#tab-recommended .cards', '.rec-card');
-});
+// Run after full load (important for your layout)
+window.onload = sortAllCards;
+
 </script>
   
 </body>
